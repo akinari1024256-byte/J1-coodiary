@@ -3,85 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coordiary - Coordinate</title>
+    <title>Coordiary - コーディネート</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-<header>
-    <h1>Coordinate</h1>
+<header class="top-bar">
+    <h1>コーディネート</h1>
 </header>
 
-<main>
+<main class="coord-main">
 
-    <!-- カテゴリ選択 -->
-    <div class="filter">
-        <button>すべて</button>
-        <button>トップス</button>
-        <button>ボトムス</button>
-        <button>アウター</button>
-        <button>シューズ</button>
+    <!-- 左側ボタン -->
+    <div class="side-left">
+        <button class="circle-btn">＋</button>
+        <button class="circle-btn">🔖</button>
     </div>
 
-    <!-- 服一覧 -->
-    <h2>服一覧</h2>
+    <!-- 中央キャンバス -->
+    <div class="coord-canvas">
 
-    <div class="clothes-list">
-
-        <div class="cloth" draggable="true">
-            <img src="images/top1.png" alt="トップス">
-        </div>
-
-        <div class="cloth" draggable="true">
-            <img src="images/bottom1.png" alt="ボトムス">
-        </div>
-
-        <div class="cloth" draggable="true">
-            <img src="images/outer1.png" alt="アウター">
-        </div>
-
-        <div class="cloth" draggable="true">
-            <img src="images/shoes1.png" alt="シューズ">
-        </div>
+        <img src="images/hat.png" class="item hat">
+        <img src="images/top.png" class="item top">
+        <img src="images/bottom.png" class="item bottom">
+        <img src="images/shoes.png" class="item shoes">
 
     </div>
 
-    <!-- コーデ作成エリア -->
-    <h2>コーデ作成</h2>
-
-    <div class="canvas" id="drop-area">
-
-        <p>ここへ服をドラッグ＆ドロップ</p>
-
+    <!-- 右側（余白 or 将来機能用） -->
+    <div class="side-right">
+        <!-- 今は空でOK -->
     </div>
-
-    <!-- 保存ボタン -->
-    <button class="save-btn">
-        コーデを保存
-    </button>
 
 </main>
 
+<!-- 下ナビ -->
 <nav class="bottom-nav">
 
     <a href="closet.html">
-        <img src="images/closet.png" alt="Closet">
+        <img src="images/closet.png">
         <span>Closet</span>
     </a>
 
     <a href="coordinate.html" class="active">
-        <img src="images/coordinate.png" alt="Coordinate">
-        <span>Coordinate</span>
+        <img src="images/coordinate.png">
+        <span>coordinate</span>
     </a>
 
     <a href="outfit.html">
-        <img src="images/outfit.png" alt="Outfit">
+        <img src="images/outfit.png">
         <span>Outfit</span>
     </a>
 
 </nav>
-
-<script src="js/coordinate.js"></script>
 
 </body>
 </html>
