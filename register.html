@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>服登録</title>
+
+<style>
+.preview {
+    width: 250px;
+    height: 250px;
+    border: 2px solid #ccc;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview img {
+    max-width: 100%;
+    max-height: 100%;
+}
+</style>
+</head>
+
+<body>
+
+<h2>服を登録</h2>
+
+<div class="preview">
+    <img id="previewImage">
+</div>
+
+<br>
+
+<input type="file" id="imageInput" accept="image/*">
+
+<br><br>
+
+<label>カテゴリ</label>
+<select id="category">
+    <option>トップス</option>
+    <option>ボトムス</option>
+    <option>アウター</option>
+    <option>シューズ</option>
+    <option>アクセサリー<option>
+</select>
+
+<br><br>
+
+<label>状態</label>
+<select id="status">
+    <option>所持服</option>
+    <option>未所持服</option>
+</select>
+
+<br><br>
+
+<label>メモ</label><br>
+<textarea id="memo" rows="4" cols="30"></textarea>
+
+<br><br>
+
+<button onclick="saveClothes()">保存</button>
+
+<script>
+
+let imageData = "";
+
+//画像プレビュー
+document.getElementById("imageInput").addEventListener("change", function(e){
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+
+        imageData = event.target.result;
+
+        document.getElementById("previewImage").src =
+            imageData;
+    };
+
+    reader.readAsDataURL(file);
+});
+
+//保存
+function saveClothes(){
+
+    const cloth = {
+        image: imageData,
+        category: document.getElementById("category").value,
+        status: document.getElementById("status").value,
+        memo: document.getElementById("memo").value
+    };
+
+    let clothes =
+        JSON.parse(localStorage.getItem("clothes")) || [];
+
+    clothes.push(cloth);
+
+    localStorage.setItem(
+        "clothes",
+        JSON.stringify(clothes)
+    );
+
+    alert("保存しました");
+
+    location.href = "closet.html";
+}
+
+</script>
+
+</body>
+</html>
