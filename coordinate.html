@@ -3,60 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coordiary - コーディネート</title>
+    <title>Coordiary - Coordinate</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
 <header class="top-bar">
-    <h1>コーディネート</h1>
+    <h1>Coordinate</h1>
 </header>
 
 <main class="coord-main">
 
-    <!-- 左側ボタン -->
-    <div class="side-left">
-        <button class="circle-btn">＋</button>
-        <button class="circle-btn">🔖</button>
-    </div>
+    <!-- クローゼット -->
+    <section class="closet">
+        <h2>Closet</h2>
 
-    <!-- 中央キャンバス -->
-    <div class="coord-canvas">
+        <!-- 所持・未所持切り替え -->
+        <div class="filter">
+            <button onclick="showClothes('すべて')">すべて</button>
+            <button onclick="showClothes('所持')">所持服</button>
+            <button onclick="showClothes('未所持')">未所持服</button>
+        </div>
 
-        <img src="images/hat.png" class="item hat">
-        <img src="images/top.png" class="item top">
-        <img src="images/bottom.png" class="item bottom">
-        <img src="images/shoes.png" class="item shoes">
+        <!-- 登録した服がここに表示される -->
+        <div id="closet-items"></div>
+    </section>
 
-    </div>
+    <!-- コーデ作成エリア -->
+    <section class="coord-section">
 
-    <!-- 右側（余白 or 将来機能用） -->
-    <div class="side-right">
-        <!-- 今は空でOK -->
-    </div>
+        <div class="side-left">
+            <button class="circle-btn" id="clearBtn">破棄</button>
+            <button class="circle-btn" id="saveBtn">保存</button>
+        </div>
+
+        <!-- ドラッグして配置する場所 -->
+        <div id="drop-area" class="coord-canvas">
+            <p class="guide-text">
+                ここに服をドラッグ＆ドロップ
+            </p>
+        </div>
+
+    </section>
 
 </main>
 
-<!-- 下ナビ -->
+<!-- 下部ナビ -->
 <nav class="bottom-nav">
 
     <a href="closet.html">
-        <img src="images/closet.png">
-        <span>Closet</span>
+        <img src="images/closet.png" alt="Closet">
+    
     </a>
 
     <a href="coordinate.html" class="active">
-        <img src="images/coordinate.png">
-        <span>coordinate</span>
+        <img src="images/coordinate.png" alt="Coordinate">
+    
     </a>
 
     <a href="outfit.html">
-        <img src="images/outfit.png">
-        <span>Outfit</span>
+        <img src="images/outfit.png" alt="Outfit">
+    
     </a>
 
 </nav>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="js/coordinate.js"></script>
 
 </body>
 </html>
