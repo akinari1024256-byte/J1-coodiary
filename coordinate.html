@@ -14,36 +14,74 @@
 
 <main>
 
-<div class="canvas">
+    <!-- カテゴリ選択 -->
+    <div class="filter">
+        <button>すべて</button>
+        <button>トップス</button>
+        <button>ボトムス</button>
+        <button>アウター</button>
+        <button>シューズ</button>
+    </div>
 
-    <p>ここに服をドラッグ</p>
+    <!-- 服一覧 -->
+    <h2>服一覧</h2>
 
-</div>
+    <div class="clothes-list">
 
-<button class="save-btn">
-保存
-</button>
+        <div class="cloth" draggable="true">
+            <img src="images/top1.png" alt="トップス">
+        </div>
+
+        <div class="cloth" draggable="true">
+            <img src="images/bottom1.png" alt="ボトムス">
+        </div>
+
+        <div class="cloth" draggable="true">
+            <img src="images/outer1.png" alt="アウター">
+        </div>
+
+        <div class="cloth" draggable="true">
+            <img src="images/shoes1.png" alt="シューズ">
+        </div>
+
+    </div>
+
+    <!-- コーデ作成エリア -->
+    <h2>コーデ作成</h2>
+
+    <div class="canvas" id="drop-area">
+
+        <p>ここへ服をドラッグ＆ドロップ</p>
+
+    </div>
+
+    <!-- 保存ボタン -->
+    <button class="save-btn">
+        コーデを保存
+    </button>
 
 </main>
 
 <nav class="bottom-nav">
 
-<a href="closet.html">
-<img src="images/closet.png">
-<span>Closet</span>
-</a>
+    <a href="closet.html">
+        <img src="images/closet.png" alt="Closet">
+        <span>Closet</span>
+    </a>
 
-<a href="coordinate.html" class="active">
-<img src="images/coordinate.png">
-<span>Coordinate</span>
-</a>
+    <a href="coordinate.html" class="active">
+        <img src="images/coordinate.png" alt="Coordinate">
+        <span>Coordinate</span>
+    </a>
 
-<a href="outfit.html">
-<img src="images/outfit.png">
-<span>Outfit</span>
-</a>
+    <a href="outfit.html">
+        <img src="images/outfit.png" alt="Outfit">
+        <span>Outfit</span>
+    </a>
 
 </nav>
+
+<script src="js/coordinate.js"></script>
 
 </body>
 </html>
