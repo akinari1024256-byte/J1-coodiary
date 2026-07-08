@@ -1,0 +1,77 @@
+#closet-container {
+    display: flex;
+    border-top: 2px solid #000;
+    margin-top: 10px;
+    height: calc(100vh - 80px); /* 画面の高さに合わせる */
+    width: 100%;
+}
+
+/* 左側のサイドバー（メニュー） */
+#sidebar {
+    width: 120px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid #000;
+    background-color: #fff;
+}
+
+/* 左メニューの1つ1つのボタン */
+.category-item {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid #000;
+    cursor: pointer;
+    color: #333;
+}
+/* 最後の項目の下線を消す */
+.category-item:last-child {
+    border-bottom: none;
+}
+
+/* 今選ばれているカテゴリ（文字を赤くして目立たせる） */
+.category-item.active {
+    color: #ff4500; 
+    background-color: #f9f9f9;
+}
+
+/* 服の画像を並べるエリア */
+#closet {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(170px,1fr));
+    
+    /* マス目とマス目の間のすき間 */
+    gap: 20px; 
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 服の画像が入る、1つ1つの白い箱 */
+.cloth-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    
+    /* 正方形（1:1）に大きさを揃える */
+    aspect-ratio: 1 / 1; 
+    
+    /* 箱の中で画像を真ん中に配置する */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* 箱の中の画像自体のサイズ調整 */
+.cloth-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; 
+}
