@@ -27,9 +27,16 @@ function changeCategory(categoryName) {
     // メニューの「アクティブ（赤文字）」の見た目を切り替える
     const items = document.querySelectorAll(".category-item");
     items.forEach(item => {
+
+        const itemText = item.textContent.trim();
+
         if (item.textContent === categoryName || (categoryName === "アクセサリー" && item.textContent === "アクセ")) {
             item.classList.add("active");
-        } else {
+        }
+        else if (itemText === categoryName) {
+            item.classList.add("active");
+        }
+        else {
             item.classList.remove("active");
         }
     });
