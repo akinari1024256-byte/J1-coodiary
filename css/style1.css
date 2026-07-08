@@ -5,7 +5,12 @@
     height: calc(100vh - 80px); /* 画面の高さに合わせる */
     width: 100%;
 }
-
+.top-bar{
+    text-align:center;
+    padding:15px;
+    background:white;
+    border-bottom:1px solid #ddd;
+}
 /* 左側のサイドバー（メニュー） */
 #sidebar {
     width: 120px;
