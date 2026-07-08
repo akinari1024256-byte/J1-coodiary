@@ -40,9 +40,10 @@
 <select id="category">
     <option>トップス</option>
     <option>ボトムス</option>
+    <option>ワンピース</option>
     <option>アウター</option>
     <option>シューズ</option>
-    <option>アクセサリー<option>
+    <option>アクセサリー</option>
 </select>
 
 <br><br>
@@ -62,56 +63,7 @@
 
 <button onclick="saveClothes()">保存</button>
 
-<script>
-
-let imageData = "";
-
-//画像プレビュー
-document.getElementById("imageInput").addEventListener("change", function(e){
-
-    const file = e.target.files[0];
-
-    if(!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function(event){
-
-        imageData = event.target.result;
-
-        document.getElementById("previewImage").src =
-            imageData;
-    };
-
-    reader.readAsDataURL(file);
-});
-
-//保存
-function saveClothes(){
-
-    const cloth = {
-        image: imageData,
-        category: document.getElementById("category").value,
-        status: document.getElementById("status").value,
-        memo: document.getElementById("memo").value
-    };
-
-    let clothes =
-        JSON.parse(localStorage.getItem("clothes")) || [];
-
-    clothes.push(cloth);
-
-    localStorage.setItem(
-        "clothes",
-        JSON.stringify(clothes)
-    );
-
-    alert("保存しました");
-
-    location.href = "closet.html";
-}
-
-</script>
+<script src="JavaScript/register.js"></script>
 
 </body>
 </html>
