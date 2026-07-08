@@ -3,6 +3,7 @@ console.log(
 );
 let editMode = false;
 let currentCategory = "トップス";
+let currentFilter = "all";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -60,6 +61,12 @@ function loadClothes(){
         if (cloth.category !== currentCategory) {
             return; 
         }
+        if (
+            currentFilter !== "all" &&
+            cloth.status !== currentFilter
+        ){
+            return;
+        }
 
         const item = document.createElement("div");
         item.className = "cloth-item";
@@ -108,3 +115,10 @@ function loadClothes(){
     });
 }
 
+function changeFilter() {
+
+    currentFilter =
+        document.getElementById("filterStatus").value;
+
+    loadClothes();
+}
