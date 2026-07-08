@@ -120,55 +120,63 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
-    dropArea.addEventListener(
-        "drop",
-        function(e){
+dropArea.addEventListener(
+    "drop",
+    function(e){
+
+        e.preventDefault();
 
 
-            e.preventDefault();
+        const image =
+        e.dataTransfer.getData("image");
 
 
-
-            const image =
-            e.dataTransfer.getData("image");
+        if(image){
 
 
+            // ガイド文字だけ削除
+            const guide =
+            dropArea.querySelector(".guide-text");
 
-            if(image){
-
-
-                const img =
-                document.createElement("img");
-
-
-                img.src = image;
-
-
-                img.className =
-                "placed-cloth";
-
-
-
-                // 配置位置
-                img.style.left =
-                (e.offsetX - 50) + "px";
-
-
-                img.style.top =
-                (e.offsetY - 50) + "px";
-
-
-
-                dropArea.appendChild(img);
-
-
-
+            if(guide){
+                guide.remove();
             }
 
 
-        }
-    );
 
+            const img = document.createElement("img");
+
+            img.src = image;
+
+            img.className = "placed-cloth";
+
+
+
+
+            // 配置位置
+            img.style.left =
+            (e.offsetX - 60) + "px";
+
+            img.style.top =
+            (e.offsetY - 60) + "px";
+
+
+
+
+            img.style.position = "fixed";
+            img.style.left = "500px";
+            img.style.top = "300px";
+            img.style.width = "150px";
+            img.style.height = "150px";
+            img.style.zIndex = "99999";
+            img.style.display = "block";
+            dropArea.appendChild(img);
+            console.log(img);
+            console.log(dropArea.innerHTML);
+        }
+
+    }
+);
 
 
 

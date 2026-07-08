@@ -4,73 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coordiary - Coordinate</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style1.css">
 </head>
 
 <body>
 
 <header class="top-bar">
-    <h1>Coordinate</h1>
+    <h1>coordinate</h1>
 </header>
 
-<main class="coord-main">
 
-    <!-- クローゼット -->
-    <section class="closet">
+<div id="coordinate-container">
+
+
+    <!-- クローゼット表示 -->
+    <div id="closet-area">
+
         <h2>Closet</h2>
 
-        <!-- 所持・未所持切り替え -->
         <div class="filter">
-            <button onclick="showClothes('すべて')">すべて</button>
-            <button onclick="showClothes('所持')">所持服</button>
-            <button onclick="showClothes('未所持')">未所持服</button>
+
+            <button onclick="showClothes('すべて')">
+                すべて
+            </button>
+
+            <button onclick="showClothes('所持服')">
+                所持服
+            </button>
+
+            <button onclick="showClothes('未所持服')">
+                未所持服
+            </button>
+
         </div>
 
-        <!-- 登録した服がここに表示される -->
+
         <div id="closet-items"></div>
-    </section>
+
+
+    </div>
+
+
 
     <!-- コーデ作成エリア -->
-    <section class="coord-section">
+
+    <div id="coordinate-area">
+
 
         <div class="side-left">
-            <button class="circle-btn" id="clearBtn">破棄</button>
-            <button class="circle-btn" id="saveBtn">保存</button>
+
+            <button class="circle-btn" id="clearBtn">
+                破棄
+            </button>
+
+
+            <button class="circle-btn" id="saveBtn">
+                保存
+            </button>
+
+
         </div>
 
-        <!-- ドラッグして配置する場所 -->
+
+
         <div id="drop-area" class="coord-canvas">
+
+
             <p class="guide-text">
                 ここに服をドラッグ＆ドロップ
             </p>
+
+
         </div>
 
-    </section>
 
-</main>
+    </div>
 
-<!-- 下部ナビ -->
+
+</div>
+
+
+
 <nav class="bottom-nav">
 
-    <a href="closet.html">
-        <img src="images/closet.png" alt="Closet">
-    
-    </a>
 
-    <a href="coordinate.html" class="active">
-        <img src="images/coordinate.png" alt="Coordinate">
-    
-    </a>
+<a href="closet.html">
 
-    <a href="outfit.html">
-        <img src="images/outfit.png" alt="Outfit">
-    
-    </a>
+<img src="images/closet.png">
+
+<span>
+Closet
+</span>
+
+</a>
+
+
+
+<a href="coordinate.html" class="active">
+
+<img src="images/coordinate.png">
+
+<span>
+Coordinate
+</span>
+
+</a>
+
+
+
+<a href="outfit.html">
+
+<img src="images/outfit.png">
+
+<span>
+Outfit
+</span>
+
+</a>
+
 
 </nav>
 
+
+
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-<script src="js/coordinate.js"></script>
+
+<script src="JavaScript/coordinate.js"></script>
+
 
 </body>
 </html>
