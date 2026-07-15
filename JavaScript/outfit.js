@@ -1,72 +1,43 @@
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", loadOutfits);
 
+function loadOutfits(){
+
+    const outfits =
+        JSON.parse(localStorage.getItem("outfits")) || [];
 
     const list =
-    document.getElementById("outfit-list");
+        document.getElementById("outfit-list");
 
+    list.innerHTML = "";
 
+    outfits.forEach((outfit,index)=>{
 
-    let outfits =
-    JSON.parse(
-        localStorage.getItem("outfits")
-    ) || [];
+        const item =
+            document.createElement("div");
 
+        item.className = "outfit-item";
 
+        const img =
+            document.createElement("img");
 
-    outfits.forEach(function(outfit){
+        img.src = outfit.image;
 
+        img.onclick = () => {
 
+            alert(
+                "日付：" + outfit.date + "\n" +
+                "気温：" + outfit.temp + "℃\n" +
+                "天気：" + outfit.weather + "\n" +
+                "タグ：" + outfit.tag + "\n" +
+                "メモ：" + (outfit.memo || "なし")
+            );
 
-        const card =
-        document.createElement("div");
+        };
 
+        item.appendChild(img);
 
-        card.className="outfit-card";
-
-
-
-        card.innerHTML =
-
-        `
-
-        <img src="${outfit.image}" width="250">
-
-
-        <p>
-        日付：${outfit.date}
-        </p>
-
-
-        <p>
-        気温：${outfit.temp}℃
-        </p>
-
-
-        <p>
-        天気：${outfit.weather}
-        </p>
-
-
-        <p>
-        タグ：${outfit.tag}
-        </p>
-
-
-        <p>
-        メモ：${outfit.memo}
-        </p>
-
-
-        `;
-
-
-
-        list.appendChild(card);
-
-
+        list.appendChild(item);
 
     });
 
-
-
-});
+}
