@@ -3,55 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>保存</title>
+    <title>コーデ保存</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<header>
-    <h1>コーデを保存</h1>
-</header>
+<h2>コーデを保存</h2>
 
-<main>
+<!-- プレビュー -->
+<div class="save-preview">
+    <div id="previewArea"></div>
+</div>
 
-    <div class="preview">
-        <h2>プレビュー</h2>
-        <div id="previewArea"></div>
-    </div>
+<br>
 
-    <div class="form">
-        <label>日付</label>
-        <input type="date" id="date">
-
-        <label>気温</label>
-        <input type="number" id="temp" placeholder="25">
-
-        <label>天気</label>
-        <select id="weather">
-            <option>晴れ</option>
-            <option>曇り</option>
-            <option>雨</option>
-            <option>雪</option>
-        </select>
-
-        <label>タグ</label>
-        <input
-        type="text"
-        id="tag"
-        placeholder="デート・通学など">
-        
-        <label>メモ</label>
-        <textarea id="memo"></textarea>
-        <button id="finishSave">保存する</button>
-
-<label>日付</label>
+<!-- 日付 -->
+<label for="date">日付</label><br>
 <input type="date" id="date">
 
-<label>気温</label>
-<input type="number" id="temp" placeholder="25">
+<br><br>
 
-<label>天気</label>
+<!-- 気温 -->
+<label for="temp">気温</label><br>
+<input
+    type="number"
+    id="temp"
+    placeholder="25"
+>
+
+<br><br>
+
+<!-- 天気 -->
+<label for="weather">天気</label><br>
 <select id="weather">
     <option>晴れ</option>
     <option>曇り</option>
@@ -59,20 +43,32 @@
     <option>雪</option>
 </select>
 
-<label>タグ</label>
+<br><br>
+
+<!-- タグ -->
+<label for="tag">タグ</label><br>
 <input
-type="text"
-id="tag"
-placeholder="デート・通学など">
+    type="text"
+    id="tag"
+    placeholder="デート・通学など"
+>
 
-<label>メモ</label>
-<textarea id="memo" rows="4" cols="30"></textarea>
+<br><br>
 
-<button id="finishSave">保存</button>
+<!-- メモ -->
+<label for="memo">メモ</label><br>
+<textarea
+    id="memo"
+    rows="4"
+    cols="30"
+></textarea>
 
-</div>
+<br><br>
 
-</main>
+<!-- 保存ボタン -->
+<button id="finishSave">
+    保存する
+</button>
 
 <script src="JavaScript/save.js"></script>
 
