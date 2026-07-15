@@ -60,7 +60,13 @@ document.addEventListener("DOMContentLoaded", function(){
     // コーデエリアへ服追加
     // ==========================
     function addClothToArea(image){
+        const guide =
+        dropArea.querySelector(".guide-text");
 
+
+        if(guide){
+            guide.remove();
+        }
         const img =document.createElement("img");
 
         img.src = image;
@@ -134,6 +140,13 @@ document.addEventListener("DOMContentLoaded", function(){
                     cloth.remove();
                 }
             );
+            if(!dropArea.querySelector(".guide-text")){
+                
+                const guide =document.createElement("p");
+                guide.className ="guide-text";
+                guide.textContent ="服を選択してください";
+                dropArea.appendChild(guide);
+            }
         }
     );
     // ==========================
