@@ -54,15 +54,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
     window.changeStatusFilter = function(){
         currentStatus =
-        document.getElementById(
-            "filterStatus"
-        ).value;
+        document.getElementById("filterStatus").value;
         showClothes();
     };
 
-    window.changeCategory = function(category){
+    window.changeCategory = function(){
         currentCategory =
-        category;
+        document.getElementById("filterCategory").value;
         showClothes();
     };
     // ==========================
@@ -167,6 +165,8 @@ document.addEventListener("DOMContentLoaded", function(){
             html2canvas(
                 dropArea,
                 {
+                    width:500,
+                    height:500,
                     useCORS:true,
                     allowTaint:false,
                     backgroundColor:"#ffffff",
