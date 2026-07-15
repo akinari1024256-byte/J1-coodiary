@@ -4,23 +4,16 @@
 document.addEventListener("DOMContentLoaded", function(){
 
 
-    const closetItems =
-    document.getElementById("closet-items");
+    const closetItems =document.getElementById("closet-items");
 
-    const dropArea =
-    document.getElementById("drop-area");
+    const dropArea =document.getElementById("drop-area");
 
-    const clearBtn =
-    document.getElementById("clearBtn");
+    const clearBtn =document.getElementById("clearBtn");
 
-    const saveBtn =
-    document.getElementById("saveBtn");
-
-
+    const saveBtn =document.getElementById("saveBtn");
 
     let currentFilter = "すべて";
-
-
+    let dragTarget = null;
 
     // ==========================
     // クローゼット表示
@@ -28,21 +21,14 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function showClothes(filter){
 
-
         currentFilter = filter;
 
-
         closetItems.innerHTML = "";
-
 
         let clothes =
         JSON.parse(localStorage.getItem("clothes")) || [];
 
-
-
         clothes.forEach(function(cloth){
-
-
 
             if(
                 filter !== "すべて" &&
@@ -51,209 +37,132 @@ document.addEventListener("DOMContentLoaded", function(){
                 return;
             }
 
-
-
             const img =
             document.createElement("img");
-
 
             img.src = cloth.image;
 
             img.className = "cloth-item";
+            img.width = 50;
+            img.height = 50;
 
-            img.draggable = true;
-
-
-
-            // ドラッグ開始
             img.addEventListener(
-                "dragstart",
-                function(e){
-
-                    e.dataTransfer.setData(
-                        "image",
-                        cloth.image
-                    );
-
-                }
-            );
-
-
+            "click",
+            function(){
+                addClothToArea(cloth.image);
+            });
 
             closetItems.appendChild(img);
-
-
-
         });
+    }
+    showClothes("すべて");
+    // ==========================
+    // コーデエリアへ服追加
+    // ==========================
+    function addClothToArea(image){
 
+        const img =document.createElement("img");
 
+        img.src = image;
+
+        img.className ="placed-cloth";
+
+        img.style.position ="absolute";
+
+        img.style.width ="120px";
+        img.style.left ="100px";
+        img.style.top ="100px";
+
+        img.draggable =true;
+
+        addDragEvent(img);
+        dropArea.appendChild(img);
     }
 
+    function addDragEvent(img){
 
+        img.addEventListener(
+            "dragstart",
+            function(e){
+                dragTarget =img;
+                e.dataTransfer.effectAllowed ="move";
+            }
+        );
+    }
+    // ==========================
+    // 服を移動
+    // ==========================
+    dropArea.addEventListener(
+        "drop",
+        function(e){
+            e.preventDefault();
+            if(dragTarget){
+                const rect =dropArea.getBoundingClientRect();
 
-    // HTMLのonclickから呼ぶため
-    window.showClothes = showClothes;
+                const x =e.clientX - rect.left;
+                const y =e.clientY - rect.top;
 
+                dragTarget.style.left =(x - 60) + "px";
+                dragTarget.style.top =(y - 60) + "px";
 
-
-    // 初期表示
-
-    showClothes("すべて");
-
-
-
-
+                dragTarget =null;
+            }
+        }
+    );
 
     // ==========================
-    // ドラッグ＆ドロップ
+    // ドロップ可能にする
     // ==========================
-
-
     dropArea.addEventListener(
         "dragover",
         function(e){
-
             e.preventDefault();
-
         }
     );
-
-
-
-dropArea.addEventListener(
-    "drop",
-    function(e){
-
-        e.preventDefault();
-
-
-        const image =
-        e.dataTransfer.getData("image");
-
-
-        if(image){
-
-
-            // ガイド文字だけ削除
-            const guide =
-            dropArea.querySelector(".guide-text");
-
-            if(guide){
-                guide.remove();
-            }
-
-
-
-            const img = document.createElement("img");
-
-            img.src = image;
-
-            img.className = "placed-cloth";
-
-
-
-
-            // 配置位置
-            img.style.left =
-            (e.offsetX - 60) + "px";
-
-            img.style.top =
-            (e.offsetY - 60) + "px";
-
-
-
-
-            img.style.position = "fixed";
-            img.style.left = "500px";
-            img.style.top = "300px";
-            img.style.width = "150px";
-            img.style.height = "150px";
-            img.style.zIndex = "99999";
-            img.style.display = "block";
-            dropArea.appendChild(img);
-            console.log(img);
-            console.log(dropArea.innerHTML);
-        }
-
-    }
-);
-
-
-
-
     // ==========================
     // 破棄ボタン
     // ==========================
-
-
     clearBtn.addEventListener(
         "click",
         function(){
-
-
-            const placed =
+            const clothes =
             dropArea.querySelectorAll(
                 ".placed-cloth"
             );
-
-
-
-            placed.forEach(function(item){
-
-                item.remove();
-
-            });
-
-
-
+            clothes.forEach(
+                function(cloth){
+                    cloth.remove();
+                }
+            );
         }
     );
-
-
-
-
-
     // ==========================
     // 保存ボタン
     // ==========================
-
-
     saveBtn.addEventListener(
         "click",
         function(){
+            html2canvas(
+                dropArea,
+                {
+                    backgroundColor:"#ffffff"
+                }
+            )
+            .then(
+                function(canvas){
+                    const imageData =
+                    canvas.toDataURL(
+                        "image/png"
+                    );
 
-
-
-            html2canvas(dropArea)
-            .then(function(canvas){
-
-
-
-                const imageData =
-                canvas.toDataURL(
-                    "image/png"
-                );
-
-
-
-                localStorage.setItem(
-                    "coordinateImage",
-                    imageData
-                );
-
-
-
-                window.location.href =
-                "save.html";
-
-
-
-            });
-
-
-
+                    localStorage.setItem(
+                        "coordinateImage",
+                        imageData
+                    );
+                    location.href =
+                    "save.html";
+                }
+            );
         }
     );
-
-
 });

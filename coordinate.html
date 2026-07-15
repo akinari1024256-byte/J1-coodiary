@@ -1,1 +1,152 @@
-<!DOCTYPE html> <html lang="ja"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Coordiary - Coordinate</title> <link rel="stylesheet" href="css/style.css"> </head> <body> <header class="top-bar"> <h1>Coordinate</h1> </header> <main class="coord-main"> <!-- クローゼット --> <section class="closet"> <h2>Closet</h2> <!-- 所持・未所持切り替え --> <div class="filter"> <button onclick="showClothes('すべて')">すべて</button> <button onclick="showClothes('所持')">所持服</button> <button onclick="showClothes('未所持')">未所持服</button> </div> <!-- 登録した服がここに表示される --> <div id="closet-items"></div> </section> <!-- コーデ作成エリア --> <section class="coord-section"> <div class="side-left"> <button class="circle-btn" id="clearBtn">破棄</button> <button class="circle-btn" id="saveBtn">保存</button> </div> <!-- ドラッグして配置する場所 --> <div id="drop-area" class="coord-canvas"> <p class="guide-text"> ここに服をドラッグ＆ドロップ </p> </div> </section> </main> <!-- 下部ナビ --> <nav class="bottom-nav"> <a href="closet.html"> <img src="images/closet.png" alt="Closet"> </a> <a href="coordinate.html" class="active"> <img src="images/coordinate.png" alt="Coordinate"> </a> <a href="outfit.html"> <img src="images/outfit.png" alt="Outfit"> </a> </nav> <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> <script src="JavaScript/coordinate.js"></script> </body> </html>
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Coordiary - Coordinate</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body>
+
+<header class="top-bar">
+    <h1>Coordinate</h1>
+</header>
+
+
+<main class="coord-main">
+
+
+    <!-- クローゼット -->
+    <section class="closet">
+
+        <h2>Closet</h2>
+
+
+        <!-- フィルター -->
+        <div class="filter">
+
+            <button onclick="showClothes('すべて')">
+                すべて
+            </button>
+
+            <button onclick="showClothes('所持')">
+                所持服
+            </button>
+
+            <button onclick="showClothes('未所持')">
+                未所持服
+            </button>
+
+        </div>
+
+
+        <!-- 服一覧 -->
+        <div id="closet-items" class="closet-list">
+
+        </div>
+
+
+    </section>
+
+
+
+
+    <!-- コーデ作成 -->
+    <section class="coord-section">
+
+
+        <div class="side-left">
+
+
+            <button id="clearBtn" class="circle-btn delete">
+
+                🗑
+
+            </button>
+
+
+
+            <button id="saveBtn" class="circle-btn save">
+
+                💾
+
+            </button>
+
+
+        </div>
+
+
+
+
+        <!-- コーデキャンバス -->
+
+        <div id="drop-area" class="coord-canvas">
+
+
+            <p class="guide-text">
+
+                服を選択してください
+
+            </p>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+
+
+<!-- 下部ナビ -->
+
+<nav class="bottom-nav">
+
+
+    <a href="closet.html">
+
+        <img src="images/closet.png">
+
+    </a>
+
+
+
+    <a href="coordinate.html" class="active">
+
+        <img src="images/coordinate.png">
+
+    </a>
+
+
+
+    <a href="outfit.html">
+
+        <img src="images/outfit.png">
+
+    </a>
+
+
+
+</nav>
+
+
+
+
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<script src="JavaScript/coordinate.js"></script>
+
+
+</body>
+
+</html>

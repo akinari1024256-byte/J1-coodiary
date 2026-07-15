@@ -19,14 +19,34 @@ body{
     object-fit:contain;
     z-index:10;
     display:block;
+    cursor:move;
+    user-select:none;
 }
 /* coordinate.htmlのクローゼット表示 */
-#closet-items .cloth-item {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin: 5px;
+#closet-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 200px;
 }
+.cloth-item {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+#drop-area{
+
+    position:relative;
+
+    width:500px;
+    height:500px;
+
+    border:1px solid #aaa;
+
+}
+
 /* メイン3分割 */
 .coord-main{
     display:flex;
@@ -59,7 +79,7 @@ body{
     position:relative;
     background:white;
     height:200px;
-    width: 100px;
+    width: 200px;
     border-radius:20px;
     margin:0 10px;
     box-shadow:0 2px 10px rgba(0,0,0,0.1);
