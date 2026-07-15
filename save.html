@@ -15,15 +15,35 @@
 
 <main>
 
-<div class="preview">
+    <div class="preview">
+        <h2>プレビュー</h2>
+        <div id="previewArea"></div>
+    </div>
 
-    <h2>プレビュー</h2>
+    <div class="form">
+        <label>日付</label>
+        <input type="date" id="date">
 
-    <div id="previewArea"></div>
+        <label>気温</label>
+        <input type="number" id="temp" placeholder="25">
 
-</div>
+        <label>天気</label>
+        <select id="weather">
+            <option>晴れ</option>
+            <option>曇り</option>
+            <option>雨</option>
+            <option>雪</option>
+        </select>
 
-<div class="form">
+        <label>タグ</label>
+        <input
+        type="text"
+        id="tag"
+        placeholder="デート・通学など">
+        
+        <label>メモ</label>
+        <textarea id="memo"></textarea>
+        <button id="finishSave">保存する</button>
 
 <label>日付</label>
 <input type="date" id="date">
