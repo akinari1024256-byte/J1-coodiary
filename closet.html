@@ -8,17 +8,22 @@
 </head>
 <body>
 <header class="top-bar">
-    <h1>closet</h1>
+    <h1>Closet</h1>
 </header>
 <button onclick="location.href='register.html'">登録</button>
 <button id="editButton">編集</button>
+<select id="filterStatus" onchange="changeFilter()">
+    <option value="all">すべて</option>
+    <option value="所持服">所持服のみ</option>
+    <option value="未所持服">未所持服のみ</option>
+</select>
 
 <div id="closet-container">
     
     <div id="sidebar">
         <div class="category-item active" onclick="changeCategory('トップス')">トップス</div>
         <div class="category-item" onclick="changeCategory('ボトムス')">ボトムス</div>
-        <div class="category-item active" onclick="changeCategory('ワンピース')">ワンピース</div>
+        <div class="category-item" onclick="changeCategory('ワンピース')">ワンピース</div>
         <div class="category-item" onclick="changeCategory('アウター')">アウター</div>
         <div class="category-item" onclick="changeCategory('シューズ')">シューズ</div>
         <div class="category-item" onclick="changeCategory('アクセサリー')">アクセサリー</div>
