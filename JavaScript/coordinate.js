@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 }
             );
             if(!dropArea.querySelector(".guide-text")){
-                
+
                 const guide =document.createElement("p");
                 guide.className ="guide-text";
                 guide.textContent ="服を選択してください";
@@ -158,22 +158,22 @@ document.addEventListener("DOMContentLoaded", function(){
             html2canvas(
                 dropArea,
                 {
-                    backgroundColor:"#ffffff"
+                    useCORS:true,
+                    allowTaint:false,
+                    backgroundColor:"#ffffff",
+                    scale:2
                 }
             )
             .then(
                 function(canvas){
                     const imageData =
-                    canvas.toDataURL(
-                        "image/png"
-                    );
+                    canvas.toDataURL("image/png");
 
                     localStorage.setItem(
                         "coordinateImage",
                         imageData
                     );
-                    location.href =
-                    "save.html";
+                    location.href ="save.html";
                 }
             );
         }

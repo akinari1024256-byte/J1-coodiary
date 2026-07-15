@@ -126,3 +126,20 @@ body{
     font-size:12px;
     text-align:center;
 }
+
+.preview{
+    background-color: white;
+}
+
+#previewArea{
+    background-color: white;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#previewArea img{
+    background-color: white;
+    display: block;
+}
