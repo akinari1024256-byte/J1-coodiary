@@ -33,37 +33,15 @@
         </select>
 
         <!-- カテゴリ -->
-        <div id="category-list">
-
-            <div class="category-item active"
-            onclick="changeCategory('すべて')">
-                すべて
-            </div>
-            <div class="category-item"
-            onclick="changeCategory('トップス')">
-                トップス
-            </div>
-            <div class="category-item"
-            onclick="changeCategory('ボトムス')">
-                ボトムス
-            </div>
-            <div class="category-item"
-            onclick="changeCategory('ワンピース')">
-                ワンピース
-            </div>
-            <div class="category-item"
-            onclick="changeCategory('アウター')">
-                アウター
-            </div>
-            <div class="category-item"
-            onclick="changeCategory('シューズ')">
-                シューズ
-            </div>
-            <div class="category-item"
-            onclick="changeCategory('アクセサリー')">
-                アクセサリー
-            </div>
-        </div>
+        <select id="filterCategory" onchange="changeCategory()">
+            <option value="すべて">すべて</option>
+            <option value="トップス">トップス</option>
+            <option value="ボトムス">ボトムス</option>
+            <option value="ワンピース">ワンピース</option>
+            <option value="アウター">アウター</option>
+            <option value="シューズ">シューズ</option>
+            <option value="アクセサリー">アクセサリー</option>
+        </select>
 
 
 
