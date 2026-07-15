@@ -108,3 +108,17 @@
     object-fit: contain;
     margin: 5px;
 }
+
+.delete-btn{
+    position:absolute;
+    top:5px;
+    right:5px;
+    width:25px;
+    height:25px;
+    border:none;
+    border-radius:50%;
+    background:red;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
