@@ -2,41 +2,28 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>コーデ保存</title>
-    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<h2>コーデを保存</h2>
-
-<!-- プレビュー -->
-<div class="save-preview">
-    <div id="previewArea"></div>
+<div class="preview" style="width: 250px; height: 250px; border: 2px solid #ccc; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+    <img id="outfitPreviewImage" src="" style="max-width: 100%; max-height: 100%;">
 </div>
 
 <br>
 
-<!-- 日付 -->
-<label for="date">日付</label><br>
-<input type="date" id="date">
+<label>日付</label><br>
+<input type="date" id="outfitDate">
 
 <br><br>
 
-<!-- 気温 -->
-<label for="temp">気温</label><br>
-<input
-    type="number"
-    id="temp"
-    placeholder="25"
->
+<label>気温</label><br>
+<input type="text" id="outfitTemp" placeholder="25">
 
 <br><br>
 
-<!-- 天気 -->
-<label for="weather">天気</label><br>
-<select id="weather">
+<label>天気</label><br>
+<select id="outfitWeather">
     <option>晴れ</option>
     <option>曇り</option>
     <option>雨</option>
@@ -45,32 +32,19 @@
 
 <br><br>
 
-<!-- タグ -->
-<label for="tag">タグ</label><br>
-<input
-    type="text"
-    id="tag"
-    placeholder="デート・通学など"
->
+<label>タグ</label><br>
+<input type="text" id="outfitTag" placeholder="デート・通学など">
 
 <br><br>
 
-<!-- メモ -->
-<label for="memo">メモ</label><br>
-<textarea
-    id="memo"
-    rows="4"
-    cols="30"
-></textarea>
+<label>メモ</label><br>
+<textarea id="outfitMemo" rows="4" cols="30"></textarea>
 
 <br><br>
 
-<!-- 保存ボタン -->
-<button id="finishSave">
-    保存する
-</button>
+<button onclick="saveOutfit()">保存する</button>
 
-<script src="JavaScript/save.js"></script>
+<script src="JavaScript/outfit-register.js"></script>
 
 </body>
 </html>
