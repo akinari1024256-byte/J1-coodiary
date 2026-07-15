@@ -12,50 +12,59 @@ document.addEventListener("DOMContentLoaded", function(){
 
     const saveBtn =document.getElementById("saveBtn");
 
-    let currentFilter = "すべて";
+    let currentStatus = "all";
+    let currentCategory = "すべて";
     let dragTarget = null;
 
     // ==========================
     // クローゼット表示
     // ==========================
 
-    function showClothes(filter){
-
-        currentFilter = filter;
-
+    function showClothes(){
         closetItems.innerHTML = "";
-
-        let clothes =
-        JSON.parse(localStorage.getItem("clothes")) || [];
+        let clothes =JSON.parse(localStorage.getItem("clothes")) || [];
 
         clothes.forEach(function(cloth){
-
             if(
-                filter !== "すべて" &&
-                cloth.status !== filter
-            ){
-                return;
-            }
-
-            const img =
-            document.createElement("img");
+                currentStatus !== "all" &&
+                cloth.status !== currentStatus
+            ){return;}
+            if (
+                currentCategory !== "すべて" &&
+                cloth.category !== currentCategory
+            ){return;}
+            const img =document.createElement("img");
 
             img.src = cloth.image;
-
             img.className = "cloth-item";
             img.width = 50;
             img.height = 50;
 
             img.addEventListener(
-            "click",
-            function(){
-                addClothToArea(cloth.image);
-            });
-
+                "click",
+                function(){
+                    addClothToArea(cloth.image);
+                }
+            );
             closetItems.appendChild(img);
         });
     }
-    showClothes("すべて");
+
+    showClothes();
+
+    window.changeStatusFilter = function(){
+        currentStatus =
+        document.getElementById(
+            "filterStatus"
+        ).value;
+        showClothes();
+    };
+
+    window.changeCategory = function(category){
+        currentCategory =
+        category;
+        showClothes();
+    };
     // ==========================
     // コーデエリアへ服追加
     // ==========================
