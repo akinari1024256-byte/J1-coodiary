@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>服登録</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/vision_bundle.js" crossorigin="anonymous"></script>
+
 <style>
 .preview {
     width: 250px;
@@ -32,7 +34,15 @@
 
 <br>
 
+<div style="display: flex; flex-direction: column; gap: 10px; width: 250px;">
+    <button type="button" style="padding: 10px; font-weight: bold;" onclick="document.getElementById('cameraInput').click()">カメラ起動</button>
+    <button type="button" style="padding: 10px;" onclick="document.getElementById('imageInput').click()">ファイルの選択</button>
+</div>
+
+<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
 <input type="file" id="imageInput" accept="image/*">
+
+<canvas id="processingCanvas" style="display:none;"></canvas>
 
 <br><br>
 
