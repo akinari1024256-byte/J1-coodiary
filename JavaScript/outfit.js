@@ -18,8 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-document.addEventListener("DOMContentLoaded", loadOutfits);
-
 function loadOutfits(){
 
     const outfits =
@@ -43,14 +41,16 @@ function loadOutfits(){
         img.src = outfit.image;
 
         img.onclick = () => {
+            if(!editMode){
+                alert(
+                    "日付：" + outfit.date + "\n" +
+                    "気温：" + outfit.temp + "℃\n" +
+                    "天気：" + outfit.weather + "\n" +
+                    "タグ：" + outfit.tag + "\n" +
+                    "メモ：" + (outfit.memo || "なし")
+                );
 
-            alert(
-                "日付：" + outfit.date + "\n" +
-                "気温：" + outfit.temp + "℃\n" +
-                "天気：" + outfit.weather + "\n" +
-                "タグ：" + outfit.tag + "\n" +
-                "メモ：" + (outfit.memo || "なし")
-            );
+            }
 
         };
 

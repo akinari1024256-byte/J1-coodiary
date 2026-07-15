@@ -168,3 +168,25 @@ body{
     cursor:pointer;
     font-size:16px;
 }
+
+.preview{
+    width:250px;
+    height:250px;
+    border:2px solid #ccc;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.preview img{
+    max-width:100%;
+    max-height:100%;
+}
+
+input,
+select,
+textarea{
+    width:250px;
+    box-sizing:border-box;
+}
