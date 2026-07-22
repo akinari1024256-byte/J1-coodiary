@@ -1,7 +1,12 @@
 let editMode = false;
 
 document.addEventListener("DOMContentLoaded", () => {
-
+    document.getElementById("sort")
+    .addEventListener("change", loadOutfits);
+    document.getElementById("filter")
+    .addEventListener("change", loadOutfits);
+    document.getElementById("tagSearch")
+    .addEventListener("input", loadOutfits);
     document.getElementById("editButton")
         .addEventListener("click", () => {
 
@@ -20,23 +25,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function loadOutfits(){
 
-    const outfits =
-        JSON.parse(localStorage.getItem("outfits")) || [];
+    const outfits = JSON.parse(localStorage.getItem("outfits")) || [];
 
-    const list =
-        document.getElementById("outfit-list");
+    const list = document.getElementById("outfit-list");
 
     list.innerHTML = "";
 
-    outfits.forEach((outfit,index)=>{
+    const keyword = document.getElementById("tagSearch").value.toLowerCase();
+    const sort = document.getElementById("sort").value;
+    const filter = document.getElementById("filter").value;
+    let filtered = outfits
+        .map((outfit, index) => ({ outfit, index }))
+        .filter(item => {
+        if(keyword !== "" &&
+           !(item.outfit.tag || "")
+            .toLowerCase()
+            .includes(keyword)){
+            return false;
+        }
 
-        const item =
-            document.createElement("div");
+        if(filter === "owned"){
+            return item.outfit.owned === true;
+        }
 
-        item.className = "outfit-item";
+        if(filter === "unowned"){
+            return item.outfit.owned === false;
+        }
 
-        const img =
-            document.createElement("img");
+
+        return true;
+
+    });
+    if(sort === "new"){
+
+        filtered.sort((a,b)=>
+            new Date(b.outfit.date) -
+            new Date(a.outfit.date)
+        );
+
+    }else{
+
+        filtered.sort((a,b)=>
+            new Date(a.outfit.date) -
+            new Date(b.outfit.date)
+        );
+
+    }
+    filtered.forEach((data)=>{
+        const outfit = data.outfit;
+        const outfitItem = document.createElement("div");
+
+        outfitItem.className = "outfit-item";
+
+        const img = document.createElement("img");
+
+        img.src = outfit.image;
+
+        outfitItem.appendChild(img);
 
         img.src = outfit.image;
 
@@ -54,23 +99,18 @@ function loadOutfits(){
 
         };
 
-        item.appendChild(img);
+        outfitItem.appendChild(img);
 
         if(editMode){
 
-            const deleteBtn =
-                document.createElement("button");
+            const deleteBtn = document.createElement("button");
 
             deleteBtn.textContent = "×";
-
             deleteBtn.className = "delete-btn";
-
             deleteBtn.onclick = () => {
 
                 if(confirm("削除しますか？")){
-
-                    outfits.splice(index,1);
-
+                    outfits.splice(data.index,1);
                     localStorage.setItem(
                         "outfits",
                         JSON.stringify(outfits)
@@ -82,11 +122,11 @@ function loadOutfits(){
 
             };
 
-            item.appendChild(deleteBtn);
+            outfitItem.appendChild(deleteBtn);
 
         }
 
-        list.appendChild(item);
+        list.appendChild(outfitItem);
 
     });
 
