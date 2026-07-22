@@ -1,45 +1,57 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coordiary - Outfit</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Coordiary - Outfit</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
 
-<header class="top-bar">
-    <h1>Outfit</h1>
-</header>
+        <header class="top-bar">
+            <h1>Outfit</h1>
+        </header>
 
-<button id="editButton">編集</button>
+        <button id="editButton">編集</button>
 
-<main>
+        <main>
+            <div class="search-area">
+                <input type="text" id="tagSearch" placeholder="タグ検索">
+                <select id="sort">
+                    <option value="new">新しい順</option>
+                    <option value="old">古い順</option>
+                </select>
 
-<div id="outfit-list"></div>
+                <select id="filter">
+                    <option value="all">すべて</option>
+                    <option value="owned">所持服のみ</option>
+                    <option value="unowned">未所持服あり</option>
+                </select>
 
-</main>
+            </div>
+            <div id="outfit-list"></div>
+        </main>
 
-<script src="JavaScript/outfit.js"></script>
+        <script src="JavaScript/outfit.js"></script>
 
-<nav class="bottom-nav">
+        <nav class="bottom-nav">
 
-<a href="closet.html">
-<img src="images/closet.png">
-<span>Closet</span>
-</a>
+            <a href="closet.html">
+                <img src="images/closet.png">
+                <span>Closet</span>
+            </a>
 
-<a href="coordinate.html">
-<img src="images/coordinate.png">
-<span>Coordinate</span>
-</a>
+            <a href="coordinate.html">
+                <img src="images/coordinate.png">
+                <span>Coordinate</span>
+            </a>
 
-<a href="outfit.html" class="active">
-<img src="images/outfit.png">
-<span>Outfit</span>
-</a>
+            <a href="outfit.html" class="active">
+                <img src="images/outfit.png">
+                <span>Outfit</span>
+            </a>
 
-</nav>
+        </nav>
 
-</body>
+    </body>
 </html>
