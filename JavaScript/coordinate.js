@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function(){
             const placedClothes = dropArea.querySelectorAll(".placed-cloth");
             const usedIds = Array.from(placedClothes).map(img => Number(img.dataset.id));
             localStorage.setItem("usedClothes", JSON.stringify(usedIds));
-            
+
             html2canvas(
                 dropArea,
                 {
