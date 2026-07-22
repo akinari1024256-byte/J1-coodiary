@@ -78,12 +78,19 @@ function loadClothes(){
             if (!editMode) {
                 alert (
                     "状態: " + (cloth.status || "未設定") + "\n" +
+                    "着用回数: " + (cloth.count || 0) + "回\n" +
                     "メモ: " + (cloth.memo || "なし")
                 );
             }
         };
 
         item.appendChild(img);
+
+        const countBadge = document.createElement("span");
+        countBadge.className = "count-badge";
+        countBadge.textContent = (cloth.count || 0) + "回";
+        
+        item.appendChild(countBadge);
 
         if(editMode){
 

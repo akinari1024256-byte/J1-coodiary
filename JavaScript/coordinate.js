@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function(){
             img.addEventListener(
                 "click",
                 function(){
-                    addClothToArea(cloth.image);
+                    addClothToArea(cloth);
                 }
             );
             closetItems.appendChild(img);
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function(){
     // ==========================
     // コーデエリアへ服追加
     // ==========================
-    function addClothToArea(image){
+    function addClothToArea(cloth){
         const guide =
         dropArea.querySelector(".guide-text");
 
@@ -76,7 +76,9 @@ document.addEventListener("DOMContentLoaded", function(){
         }
         const img =document.createElement("img");
 
-        img.src = image;
+        img.src = cloth.image;
+
+        img.dataset.id = cloth.id;
 
         img.className ="placed-cloth";
 
@@ -162,6 +164,10 @@ document.addEventListener("DOMContentLoaded", function(){
     saveBtn.addEventListener(
         "click",
         function(){
+            const placedClothes = dropArea.querySelectorAll(".placed-cloth");
+            const usedIds = Array.from(placedClothes).map(img => Number(img.dataset.id));
+            localStorage.setItem("usedClothes", JSON.stringify(usedIds));
+            
             html2canvas(
                 dropArea,
                 {
