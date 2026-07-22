@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function(){
         closetItems.innerHTML = "";
         let clothes =JSON.parse(localStorage.getItem("clothes")) || [];
 
-        clothes.forEach(function(cloth){
+        clothes.forEach(function(cloth, index){
             if(
                 currentStatus !== "all" &&
                 cloth.status !== currentStatus
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function(){
             img.addEventListener(
                 "click",
                 function(){
-                    addClothToArea(cloth);
+                    addClothToArea(cloth, index);
                 }
             );
             closetItems.appendChild(img);
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function(){
     // ==========================
     // コーデエリアへ服追加
     // ==========================
-    function addClothToArea(cloth){
+    function addClothToArea(cloth, index){
         const guide =
         dropArea.querySelector(".guide-text");
 
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         img.src = cloth.image;
 
-        img.dataset.id = cloth.id;
+        img.dataset.id = index;
 
         img.className ="placed-cloth";
 
