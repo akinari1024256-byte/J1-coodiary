@@ -45,11 +45,11 @@ function loadOutfits(){
         }
 
         if(filter === "owned"){
-            return item.outfit.owned === true;
+            return item.outfit.hasUnowned === false;
         }
 
         if(filter === "unowned"){
-            return item.outfit.owned === false;
+            return item.outfit.hasUnowned === true;
         }
 
 

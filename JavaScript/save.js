@@ -9,38 +9,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-// 保存
+
 function saveOutfit() {
+    const usedIds = JSON.parse(localStorage.getItem("usedClothes")) || [];
+    
+    let clothes = JSON.parse(localStorage.getItem("clothes")) || [];
+    const hasUnowned = usedIds.some(id => {
+        return clothes[id] && clothes[id].status === "未所持服";
+    });
 
     const outfit = {
-
         image: localStorage.getItem("coordinateImage"),
-
         date: document.getElementById("outfitDate").value,
-
         temp: document.getElementById("outfitTemp").value,
-
         weather: document.getElementById("outfitWeather").value,
-
         tag: document.getElementById("outfitTag").value,
-
-        memo: document.getElementById("outfitMemo").value
-
+        memo: document.getElementById("outfitMemo").value,
+        hasUnowned: hasUnowned
     };
 
-    let outfits =
-        JSON.parse(localStorage.getItem("outfits")) || [];
+    let outfits = JSON.parse(localStorage.getItem("outfits")) || [];
 
     outfits.push(outfit);
 
-    const usedIds =
-    JSON.parse(localStorage.getItem("usedClothes")) || [];
-    
-    let clothes =
-    JSON.parse(localStorage.getItem("clothes")) || [];
-    
-    clothes.forEach(cloth => {
-        if(usedIds.includes(cloth.id)){
+
+
+    clothes.forEach((cloth, index )=> {
+        if(usedIds.includes(index)){
             cloth.count = (cloth.count || 0) + 1;
         }
     });
