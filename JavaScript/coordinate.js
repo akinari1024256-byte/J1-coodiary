@@ -88,26 +88,6 @@ document.addEventListener("DOMContentLoaded", function(){
         img.style.left ="100px";
         img.style.top ="100px";
 
-        img.dataset.scale = 1;
-
-        img.addEventListener("wheel", function(e){
-            e.preventDefault();
-            
-            let scale = Number(img.dataset.scale);
-            
-            if(e.deltaY < 0){
-                scale += 0.1;
-            }else{
-                scale -= 0.1;
-            }
-            
-            if(scale < 0.3) scale = 0.3;
-            if(scale > 3) scale = 3;
-            
-            img.dataset.scale = scale;
-            img.style.transform = `scale(${scale})`;
-        });
-
         img.draggable =true;
 
         addDragEvent(img);
