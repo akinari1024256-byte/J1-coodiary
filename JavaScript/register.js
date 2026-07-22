@@ -33,10 +33,12 @@ function saveClothes() {
         document.getElementById("memo").value;
 
     const clothes = {
+        id: Date.now(),
         image: imageData,
         category: category,
         status: status,
-        memo: memo
+        memo: memo,
+        count: 0
     };
 
     let closetData = localStorage.getItem("clothes");

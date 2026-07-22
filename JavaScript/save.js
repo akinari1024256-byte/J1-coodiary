@@ -33,6 +33,25 @@ function saveOutfit() {
 
     outfits.push(outfit);
 
+    const usedIds =
+    JSON.parse(localStorage.getItem("usedClothes")) || [];
+    
+    let clothes =
+    JSON.parse(localStorage.getItem("clothes")) || [];
+    
+    clothes.forEach(cloth => {
+        if(usedIds.includes(cloth.id)){
+            cloth.count = (cloth.count || 0) + 1;
+        }
+    });
+    
+    localStorage.setItem(
+        "clothes",
+        JSON.stringify(clothes)
+    );
+
+localStorage.removeItem("usedClothes");
+
     localStorage.setItem(
         "outfits",
         JSON.stringify(outfits)
