@@ -10,49 +10,59 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function saveOutfit() {
+async function saveOutfit() {
+    // coordinate.js で保存した服の docId 一覧を取得
     const usedIds = JSON.parse(localStorage.getItem("usedClothes")) || [];
     
-    let clothes = JSON.parse(localStorage.getItem("clothes")) || [];
-    const hasUnowned = usedIds.some(id => {
-        return clothes[id] && clothes[id].status === "未所持服";
-    });
+    try {
+        // 使用された服のデータを Firestore から取得して「未所持服」が含まれているか判定 ＆ 着用回数(+1)を更新
+        let hasUnowned = false;
 
-    const outfit = {
-        image: localStorage.getItem("coordinateImage"),
-        date: document.getElementById("outfitDate").value,
-        temp: document.getElementById("outfitTemp").value,
-        weather: document.getElementById("outfitWeather").value,
-        tag: document.getElementById("outfitTag").value,
-        memo: document.getElementById("outfitMemo").value,
-        hasUnowned: hasUnowned
-    };
+        for (const docId of usedIds) {
+            const clothRef = db.collection("clothes").doc(docId);
+            const doc = await clothRef.get();
 
-    let outfits = JSON.parse(localStorage.getItem("outfits")) || [];
+            if (doc.exists) {
+                const clothData = doc.data();
 
-    outfits.push(outfit);
+                // 未所持服チェック
+                if (clothData.status === "未所持服") {
+                    hasUnowned = true;
+                }
 
-
-
-    clothes.forEach((cloth, index )=> {
-        if(usedIds.includes(index)){
-            cloth.count = (cloth.count || 0) + 1;
+                // 着用回数 (count) を +1 して Firestore を更新
+                const currentCount = clothData.count || 0;
+                await clothRef.update({
+                    count: currentCount + 1
+                });
+            }
         }
-    });
-    
-    localStorage.setItem(
-        "clothes",
-        JSON.stringify(clothes)
-    );
 
-localStorage.removeItem("usedClothes");
+        // コーデオブジェクトの作成
+        const outfit = {
+            image: localStorage.getItem("coordinateImage"),
+            date: document.getElementById("outfitDate").value,
+            temp: document.getElementById("outfitTemp").value,
+            weather: document.getElementById("outfitWeather").value,
+            tag: document.getElementById("outfitTag").value,
+            memo: document.getElementById("outfitMemo").value,
+            hasUnowned: hasUnowned,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp() // 並び替え用タイムスタンプ
+        };
 
-    localStorage.setItem(
-        "outfits",
-        JSON.stringify(outfits)
-    );
+        // Firestore の "outfits" コレクションへ保存
+        await db.collection("outfits").add(outfit);
 
-    alert("保存しました");
+        // 一時保存データのクリーンアップ
+        localStorage.removeItem("usedClothes");
+        localStorage.removeItem("coordinateImage");
 
-    location.href = "outfit.html";
+        alert("保存しました");
+
+        location.href = "outfit.html";
+
+    } catch (error) {
+        console.error("コーデの保存エラー:", error);
+        alert("保存に失敗しました。");
+    }
 }
