@@ -1,53 +1,58 @@
 // coordinate.js
 
-
 document.addEventListener("DOMContentLoaded", function(){
 
-
-    const closetItems =document.getElementById("closet-items");
-
-    const dropArea =document.getElementById("drop-area");
-
-    const clearBtn =document.getElementById("clearBtn");
-
-    const saveBtn =document.getElementById("saveBtn");
+    const closetItems = document.getElementById("closet-items");
+    const dropArea = document.getElementById("drop-area");
+    const clearBtn = document.getElementById("clearBtn");
+    const saveBtn = document.getElementById("saveBtn");
 
     let currentStatus = "all";
     let currentCategory = "すべて";
     let dragTarget = null;
 
     // ==========================
-    // クローゼット表示
+    // クローゼット表示（Firestore対応）
     // ==========================
-
-    function showClothes(){
+    async function showClothes(){
         closetItems.innerHTML = "";
-        let clothes =JSON.parse(localStorage.getItem("clothes")) || [];
 
-        clothes.forEach(function(cloth, index){
-            if(
-                currentStatus !== "all" &&
-                cloth.status !== currentStatus
-            ){return;}
-            if (
-                currentCategory !== "すべて" &&
-                cloth.category !== currentCategory
-            ){return;}
-            const img =document.createElement("img");
+        try {
+            // Firestoreから服データを取得
+            const snapshot = await db.collection("clothes").get();
 
-            img.src = cloth.image;
-            img.className = "cloth-item";
-            img.width = 50;
-            img.height = 50;
+            snapshot.forEach(function(doc){
+                const cloth = doc.data();
+                const docId = doc.id; // ドキュメントID
 
-            img.addEventListener(
-                "click",
-                function(){
-                    addClothToArea(cloth, index);
-                }
-            );
-            closetItems.appendChild(img);
-        });
+                if(
+                    currentStatus !== "all" &&
+                    cloth.status !== currentStatus
+                ){return;}
+
+                if (
+                    currentCategory !== "すべて" &&
+                    cloth.category !== currentCategory
+                ){return;}
+
+                const img = document.createElement("img");
+
+                img.src = cloth.image;
+                img.className = "cloth-item";
+                img.width = 50;
+                img.height = 50;
+
+                img.addEventListener(
+                    "click",
+                    function(){
+                        addClothToArea(cloth, docId);
+                    }
+                );
+                closetItems.appendChild(img);
+            });
+        } catch (error) {
+            console.error("服データの取得に失敗しました:", error);
+        }
     }
 
     showClothes();
@@ -63,32 +68,29 @@ document.addEventListener("DOMContentLoaded", function(){
         document.getElementById("filterCategory").value;
         showClothes();
     };
+
     // ==========================
     // コーデエリアへ服追加
     // ==========================
-    function addClothToArea(cloth, index){
+    function addClothToArea(cloth, id){
         const guide =
         dropArea.querySelector(".guide-text");
-
 
         if(guide){
             guide.remove();
         }
-        const img =document.createElement("img");
+        const img = document.createElement("img");
 
         img.src = cloth.image;
+        img.dataset.id = id; // docIdを格納
 
-        img.dataset.id = index;
+        img.className = "placed-cloth";
+        img.style.position = "absolute";
+        img.style.width = "120px";
+        img.style.left = "100px";
+        img.style.top = "100px";
 
-        img.className ="placed-cloth";
-
-        img.style.position ="absolute";
-
-        img.style.width ="120px";
-        img.style.left ="100px";
-        img.style.top ="100px";
-
-        img.draggable =true;
+        img.draggable = true;
 
         addDragEvent(img);
         dropArea.appendChild(img);
@@ -99,11 +101,12 @@ document.addEventListener("DOMContentLoaded", function(){
         img.addEventListener(
             "dragstart",
             function(e){
-                dragTarget =img;
-                e.dataTransfer.effectAllowed ="move";
+                dragTarget = img;
+                e.dataTransfer.effectAllowed = "move";
             }
         );
     }
+
     // ==========================
     // 服を移動
     // ==========================
@@ -112,15 +115,15 @@ document.addEventListener("DOMContentLoaded", function(){
         function(e){
             e.preventDefault();
             if(dragTarget){
-                const rect =dropArea.getBoundingClientRect();
+                const rect = dropArea.getBoundingClientRect();
 
-                const x =e.clientX - rect.left;
-                const y =e.clientY - rect.top;
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
 
-                dragTarget.style.left =(x - 60) + "px";
-                dragTarget.style.top =(y - 60) + "px";
+                dragTarget.style.left = (x - 60) + "px";
+                dragTarget.style.top = (y - 60) + "px";
 
-                dragTarget =null;
+                dragTarget = null;
             }
         }
     );
@@ -134,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function(){
             e.preventDefault();
         }
     );
+
     // ==========================
     // 破棄ボタン
     // ==========================
@@ -151,13 +155,14 @@ document.addEventListener("DOMContentLoaded", function(){
             );
             if(!dropArea.querySelector(".guide-text")){
 
-                const guide =document.createElement("p");
-                guide.className ="guide-text";
-                guide.textContent ="服を選択してください";
+                const guide = document.createElement("p");
+                guide.className = "guide-text";
+                guide.textContent = "服を選択してください";
                 dropArea.appendChild(guide);
             }
         }
     );
+
     // ==========================
     // 保存ボタン
     // ==========================
@@ -165,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function(){
         "click",
         function(){
             const placedClothes = dropArea.querySelectorAll(".placed-cloth");
-            const usedIds = Array.from(placedClothes).map(img => Number(img.dataset.id));
+            const usedIds = Array.from(placedClothes).map(img => img.dataset.id);
             localStorage.setItem("usedClothes", JSON.stringify(usedIds));
 
             html2canvas(
@@ -188,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function(){
                         "coordinateImage",
                         imageData
                     );
-                    location.href ="save.html";
+                    location.href = "save.html";
                 }
             );
         }
