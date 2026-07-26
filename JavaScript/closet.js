@@ -1,6 +1,3 @@
-console.log(
-    JSON.parse(localStorage.getItem("clothes"))
-);
 let editMode = false;
 let currentCategory = "トップス";
 let currentFilter = "all";
@@ -46,80 +43,87 @@ function changeCategory(categoryName) {
     loadClothes();
 }
 
-function loadClothes(){
+// Firestoreからデータを読み込んで表示する非同期関数
+async function loadClothes(){
 
-    const clothes =
-        JSON.parse(localStorage.getItem("clothes")) || [];
-
-    const closet =
-        document.getElementById("closet");
-
+    const closet = document.getElementById("closet");
     closet.innerHTML = "";
 
-    clothes.forEach((cloth,index) => {
+    try {
+        // Firestoreの "clothes" コレクションから全データを取得
+        const snapshot = await db.collection("clothes").get();
 
-        if (cloth.category !== currentCategory) {
-            return; 
-        }
-        if (
-            currentFilter !== "all" &&
-            cloth.status !== currentFilter
-        ){
-            return;
-        }
+        snapshot.forEach(doc => {
+            const cloth = doc.data();
+            const docId = doc.id; // 削除時に使用するドキュメントID
 
-        const item = document.createElement("div");
-        item.className = "cloth-item";
-
-        const img = document.createElement("img");
-        img.src = cloth.image;
-
-        img.onclick = () => {
-            if (!editMode) {
-                alert (
-                    "状態: " + (cloth.status || "未設定") + "\n" +
-                    "着用回数: " + (cloth.count || 0) + "回\n" +
-                    "メモ: " + (cloth.memo || "なし")
-                );
+            // カテゴリでの絞り込み
+            if (cloth.category !== currentCategory) {
+                return; 
             }
-        };
+            // 所持/未所持フィルターでの絞り込み
+            if (
+                currentFilter !== "all" &&
+                cloth.status !== currentFilter
+            ){
+                return;
+            }
 
-        item.appendChild(img);
+            const item = document.createElement("div");
+            item.className = "cloth-item";
 
-        const countBadge = document.createElement("span");
-        countBadge.className = "count-badge";
-        countBadge.textContent = (cloth.count || 0) + "回";
-        
-        item.appendChild(countBadge);
+            const img = document.createElement("img");
+            img.src = cloth.image;
 
-        if(editMode){
-
-            const deleteBtn =
-                document.createElement("button");
-
-            deleteBtn.textContent = "×";
-            deleteBtn.className = "delete-btn";
-
-            deleteBtn.onclick = () => {
-
-                if(confirm("削除しますか？")){
-
-                    clothes.splice(index,1);
-
-                    localStorage.setItem(
-                        "clothes",
-                        JSON.stringify(clothes)
+            img.onclick = () => {
+                if (!editMode) {
+                    alert (
+                        "状態: " + (cloth.status || "未設定") + "\n" +
+                        "着用回数: " + (cloth.count || 0) + "回\n" +
+                        "メモ: " + (cloth.memo || "なし")
                     );
-
-                    loadClothes();
                 }
             };
 
-            item.appendChild(deleteBtn);
-        }
+            item.appendChild(img);
 
-        closet.appendChild(item);
-    });
+            const countBadge = document.createElement("span");
+            countBadge.className = "count-badge";
+            countBadge.textContent = (cloth.count || 0) + "回";
+            
+            item.appendChild(countBadge);
+
+            // 編集モード時の削除ボタン処理
+            if(editMode){
+
+                const deleteBtn = document.createElement("button");
+
+                deleteBtn.textContent = "×";
+                deleteBtn.className = "delete-btn";
+
+                deleteBtn.onclick = async () => {
+
+                    if(confirm("削除しますか？")){
+                        try {
+                            // Firestoreから該当データを削除
+                            await db.collection("clothes").doc(docId).delete();
+                            loadClothes(); // 画面再読み込み
+                        } catch (error) {
+                            console.error("削除エラー:", error);
+                            alert("削除に失敗しました。");
+                        }
+                    }
+                };
+
+                item.appendChild(deleteBtn);
+            }
+
+            closet.appendChild(item);
+        });
+
+    } catch (error) {
+        console.error("データ取得エラー:", error);
+    }
 }
 
 function changeFilter() {
