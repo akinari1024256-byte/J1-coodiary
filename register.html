@@ -4,6 +4,26 @@
 <meta charset="UTF-8">
 <title>服登録</title>
 
+<!-- Firebase SDK (v9/v10 Compat) の読み込み -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+  // Firebase 設定情報
+  const firebaseConfig = {
+    apiKey: "AIzaSyA_a35sK_zsTwwui5YlY0_ftSyEwJHyeoc",
+    authDomain: "coordinary-7accd.firebaseapp.com",
+    projectId: "coordiary-7accd",
+    storageBucket: "coordinary-7accd.firebasestorage.app",
+    messagingSenderId: "235582648668",
+    appId: "1:235582648668:web:e0c70a45e659307fcad199"
+  };
+
+  // Firebase の初期化
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
 <style>
 .preview {
     width: 250px;
