@@ -14,8 +14,7 @@ document.getElementById("imageInput")
 
         imageData = event.target.result;
 
-        document.getElementById("previewImage").src =
-            imageData;
+        document.getElementById("previewImage").src = imageData;
     };
 
     reader.readAsDataURL(file);
@@ -88,20 +87,16 @@ function closeModal() {
     document.getElementById("confirmModal").style.display = "none";
 }
 
-//保存
-function submitToFirebase() {
+// モーダルの「この内容で登録」ボタンクリック時：Firebase (Firestore) へ保存
+async function submitToFirebase() {
 
-    const category =
-        document.getElementById("category").value;
+    const category = document.getElementById("category").value;
+    const status = document.getElementById("status").value;
+    const memo = document.getElementById("memo").value;
 
-    const status =
-        document.getElementById("status").value;
-
-    const memo =
-        document.getElementById("memo").value;
-
+    // Firebase (Firestore) に送るデータの構造
     const clothes = {
-        id: Date.now(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(), // 登録日時
         image: croppedImageData || imageData,
         category: category,
         status: status,
@@ -109,25 +104,15 @@ function submitToFirebase() {
         count: 0
     };
 
-    let closetData = localStorage.getItem("clothes");
-    let closet = [];
-
     try {
-        closet = JSON.parse(closetData);
-        // 読み込んだデータが「配列」じゃなかったら、強制的に空の配列にする
-        if (!Array.isArray(closet)) {
-            closet = [];
-        }
-    } catch (e) {
-        closet = [];
+        // Firestore の "clothes" コレクションにデータを保存
+        await db.collection("clothes").add(clothes);
+
+        alert("Firebaseに保存しました！");
+        location.href = "closet.html";
+
+    } catch (error) {
+        console.error("Firebase保存エラー:", error);
+        alert("Firebaseへの保存に失敗しました。設定やルールを確認してください。");
     }
-
-    // 配列に新データを追加
-    closet.push(clothes);
-
-    // 保存
-    localStorage.setItem("clothes", JSON.stringify(closet));
-
-    alert("保存しました");
-    location.href = "closet.html";
 }
