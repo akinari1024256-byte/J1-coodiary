@@ -19,7 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    loadOutfits();
+    // ★ ログイン状態を確認してからデータを読み込む
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            loadOutfits();
+        }
+    });
 
 });
 
@@ -28,9 +33,13 @@ async function loadOutfits(){
     const list = document.getElementById("outfit-list");
     list.innerHTML = "";
 
+    // ★ ログインユーザーの取得
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+
     try {
-        // Firestoreの "outfits" コレクションからデータを取得
-        const snapshot = await db.collection("outfits").get();
+        // ★ ログインユーザー配下の "outfits" コレクションからデータを取得
+        const snapshot = await db.collection("users").doc(user.uid).collection("outfits").get();
         const outfits = [];
 
         snapshot.forEach(doc => {
@@ -108,8 +117,8 @@ async function loadOutfits(){
 
                     if(confirm("削除しますか？")){
                         try {
-                            // Firestoreから該当のコーデデータを削除
-                            await db.collection("outfits").doc(docId).delete();
+                            // ★ ユーザー配下の指定ドキュメントを削除
+                            await db.collection("users").doc(user.uid).collection("outfits").doc(docId).delete();
                             loadOutfits(); // 画面を再読み込み
                         } catch (error) {
                             console.error("コーデの削除エラー:", error);
