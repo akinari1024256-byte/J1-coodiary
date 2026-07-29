@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>服登録</title>
 
-<!-- Firebase SDK (v9/v10 Compat) の読み込み -->
+<!-- Firebase SDK (v10 Compat) の読み込み -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<!-- ★ログイン連携に必要な Auth SDK を追加 -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
 <script>
-  // Firebase 設定情報（projectIdのスペルミスを修正済み）
+  // Firebase 設定情報
   const firebaseConfig = {
     apiKey: "AIzaSyA_a35sK_zsTwwui5YlY0_ftSyEwJHyeoc",
     authDomain: "coordinary-7accd.firebaseapp.com",
@@ -23,6 +25,17 @@
   // Firebase の初期化
   firebase.initializeApp(firebaseConfig);
   window.db = firebase.firestore();
+  window.auth = firebase.auth(); // ★Authオブジェクトをグローバル化
+
+  // ★未ログインユーザーを login.html へ自動リダイレクトするガード処理
+  window.auth.onAuthStateChanged((user) => {
+    if (!user) {
+      console.log("未ログインのため、login.htmlへ遷移します");
+      location.href = "login.html";
+    } else {
+      console.log("ログイン中のユーザー:", user.displayName || user.email);
+    }
+  });
 </script>
 
 <style>
