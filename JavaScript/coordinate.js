@@ -73,8 +73,7 @@ document.addEventListener("DOMContentLoaded", function(){
     // コーデエリアへ服追加
     // ==========================
     function addClothToArea(cloth, id){
-        const guide =
-        dropArea.querySelector(".guide-text");
+        const guide =dropArea.querySelector(".guide-text");
 
         if(guide){
             guide.remove();
@@ -171,8 +170,6 @@ document.addEventListener("DOMContentLoaded", function(){
         function(){
             const placedClothes = dropArea.querySelectorAll(".placed-cloth");
             const usedIds = Array.from(placedClothes).map(img => img.dataset.id);
-            localStorage.setItem("usedClothes", JSON.stringify(usedIds));
-
             html2canvas(
                 dropArea,
                 {
@@ -184,18 +181,12 @@ document.addEventListener("DOMContentLoaded", function(){
                     scale:2
                 }
             )
-            .then(
-                function(canvas){
-                    const imageData =
-                    canvas.toDataURL("image/png");
-
-                    localStorage.setItem(
-                        "coordinateImage",
-                        imageData
-                    );
-                    location.href = "save.html";
-                }
-            );
+            .then(async function(canvas){
+                const image =canvas.toDataURL("image/png");
+                sessionStorage.setItem("coordinateImage",image);
+                sessionStorage.setItem("usedClothes",JSON.stringify(usedIds));
+                location.href="save.html";
+            });
         }
-    );
-});
+    )
+});  
