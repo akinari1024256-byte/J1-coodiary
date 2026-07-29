@@ -11,6 +11,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 async function saveOutfit() {
+    // ★ ログイン中のユーザーを取得
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        alert("ログイン状態が確認できません。再度ログインしてください。");
+        return;
+    }
+
     // coordinate.js で保存した服の docId 一覧を取得
     const usedIds = JSON.parse(sessionStorage.getItem("usedClothes")) || [];
     
@@ -19,7 +26,8 @@ async function saveOutfit() {
         let hasUnowned = false;
 
         for (const docId of usedIds) {
-            const clothRef = db.collection("clothes").doc(docId);
+            // ★ ユーザー配下の服ドキュメントを参照
+            const clothRef = db.collection("users").doc(user.uid).collection("clothes").doc(docId);
             const doc = await clothRef.get();
 
             if (doc.exists) {
@@ -50,8 +58,8 @@ async function saveOutfit() {
             createdAt: firebase.firestore.FieldValue.serverTimestamp() // 並び替え用タイムスタンプ
         };
 
-        // Firestore の "outfits" コレクションへ保存
-        await db.collection("outfits").add(outfit);
+        // ★ Firestore の users/{user.uid}/outfits コレクションへ保存
+        await db.collection("users").doc(user.uid).collection("outfits").add(outfit);
 
         // 一時保存データのクリーンアップ
         sessionStorage.removeItem("usedClothes");
