@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     // プレビュー画像表示
-    const image = localStorage.getItem("coordinateImage");
+    const image = sessionStorage.getItem("coordinateImage");
 
     if (image) {
         document.getElementById("outfitPreviewImage").src = image;
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function saveOutfit() {
     // coordinate.js で保存した服の docId 一覧を取得
-    const usedIds = JSON.parse(localStorage.getItem("usedClothes")) || [];
+    const usedIds = JSON.parse(sessionStorage.getItem("usedClothes")) || [];
     
     try {
         // 使用された服のデータを Firestore から取得して「未所持服」が含まれているか判定 ＆ 着用回数(+1)を更新
@@ -40,7 +40,7 @@ async function saveOutfit() {
 
         // コーデオブジェクトの作成
         const outfit = {
-            image: localStorage.getItem("coordinateImage"),
+            image: sessionStorage.getItem("coordinateImage"),
             date: document.getElementById("outfitDate").value,
             temp: document.getElementById("outfitTemp").value,
             weather: document.getElementById("outfitWeather").value,
@@ -54,8 +54,8 @@ async function saveOutfit() {
         await db.collection("outfits").add(outfit);
 
         // 一時保存データのクリーンアップ
-        localStorage.removeItem("usedClothes");
-        localStorage.removeItem("coordinateImage");
+        sessionStorage.removeItem("usedClothes");
+        sessionStorage.removeItem("coordinateImage");
 
         alert("保存しました");
 
