@@ -96,12 +96,7 @@ function closeModal() {
 
 // モーダルの「この内容で登録」ボタンクリック時：Firebase (Firestore) へ保存
 async function submitToFirebase() {
-<<<<<<< HEAD
     console.log("submit開始");
-=======
-    console.log("★「この内容で登録」ボタンがクリックされました！");
-
->>>>>>> a33e149633b45dbc92994328717dcd1cad48afc7
     const category = document.getElementById("category").value;
     const status = document.getElementById("status").value;
     const memo = document.getElementById("memo").value;
