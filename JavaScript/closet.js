@@ -15,7 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
         loadClothes();
     });
 
-    loadClothes();
+    // ★ログイン状態の確認が終わってから服一覧を取得する
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            loadClothes();
+        }
+    });
 });
 
 // カテゴリを切り替えるための関数
@@ -49,9 +54,13 @@ async function loadClothes(){
     const closet = document.getElementById("closet");
     closet.innerHTML = "";
 
+    // ★ログイン中のユーザーを取得
+    const user = firebase.auth().currentUser;
+    if (!user) return; // 未ログイン時は処理を中断（closet.html側でリダイレクトされます）
+
     try {
-        // Firestoreの "clothes" コレクションから全データを取得
-        const snapshot = await db.collection("clothes").get();
+        // ★ Firestoreの users/{user.uid}/clothes コレクションからデータを取得
+        const snapshot = await db.collection("users").doc(user.uid).collection("clothes").get();
 
         snapshot.forEach(doc => {
             const cloth = doc.data();
@@ -105,8 +114,8 @@ async function loadClothes(){
 
                     if(confirm("削除しますか？")){
                         try {
-                            // Firestoreから該当データを削除
-                            await db.collection("clothes").doc(docId).delete();
+                            // ★ Firestoreから該当ユーザーの服データを削除
+                            await db.collection("users").doc(user.uid).collection("clothes").doc(docId).delete();
                             loadClothes(); // 画面再読み込み
                         } catch (error) {
                             console.error("削除エラー:", error);
