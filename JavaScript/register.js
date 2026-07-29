@@ -56,7 +56,14 @@ async function saveClothes() {
         const result = await response.json();
 
         // 解析結果と入力値をモーダルへ反映
-        croppedImageData = result.cropped_image || imageData; 
+        let processedImg = result.cropped_image || imageData;
+        
+        // base64ヘッダーが付いていない場合に自動補完する処理を追加
+        if (processedImg && !processedImg.startsWith("data:image")) {
+            processedImg = "data:image/png;base64," + processedImg;
+        }
+
+        croppedImageData = processedImg;
 
         document.getElementById("croppedPreviewImage").src = croppedImageData;
         document.getElementById("confirmCategory").textContent = category;
