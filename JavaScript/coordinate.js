@@ -170,15 +170,35 @@ document.addEventListener("DOMContentLoaded", function(){
         function(){
             const placedClothes = dropArea.querySelectorAll(".placed-cloth");
             const usedIds = Array.from(placedClothes).map(img => img.dataset.id);
+            // 服がない場合
+            if(placedClothes.length === 0){
+                alert("服を配置してください");
+                return;
+            }
+            let minX = Infinity;
+            let minY = Infinity;
+            let maxX = 0;
+            let maxY = 0;
+            placedClothes.forEach(img => {
+                const x = img.offsetLeft;
+                const y = img.offsetTop;
+                const width = img.offsetWidth;
+                const height = img.offsetHeight;
+                minX = Math.min(minX, x);
+                minY = Math.min(minY, y);
+                maxX = Math.max(maxX, x + width);
+                maxY = Math.max(maxY, y + height);
+            });
+            const padding = 20;
             html2canvas(
                 dropArea,
                 {
-                    width:500,
-                    height:500,
-                    useCORS:true,
-                    allowTaint:false,
                     backgroundColor:"#ffffff",
-                    scale:2
+                    scale:2,
+                    x: minX - padding,
+                    y: minY - padding,
+                    width:(maxX - minX) + padding * 2,
+                    height:(maxY - minY) + padding * 2
                 }
             )
             .then(async function(canvas){
