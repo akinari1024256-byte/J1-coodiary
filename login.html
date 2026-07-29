@@ -12,7 +12,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
 <script>
-  // Firebase 設定情報
+  // Firebase 設定情報（projectId・apiKey 修正済み）
   const firebaseConfig = {
     apiKey: "AIzaSyA_a35sK_zsTwwui5YlY0_ftSyEwJHyeoc",
     authDomain: "coordinary-7accd.firebaseapp.com",
@@ -113,7 +113,7 @@ body {
 auth.onAuthStateChanged((user) => {
     if (user) {
         console.log("すでにログイン中:", user.displayName);
-        location.href = "closet.html"; // または register.html
+        location.href = "closet.html";
     }
 });
 
@@ -125,7 +125,7 @@ function loginWithGoogle() {
         .then((result) => {
             console.log("ログイン成功！", result.user);
             alert(`${result.user.displayName} さん、ようこそ！`);
-            location.href = "closet.html"; // ログイン後の遷移先
+            location.href = "closet.html";
         })
         .catch((error) => {
             console.error("ログインエラー:", error);
