@@ -12,14 +12,18 @@ document.addEventListener("DOMContentLoaded", function(){
     let dragTarget = null;
 
     // ==========================
-    // クローゼット表示（Firestore対応）
+    // クローゼット表示（ユーザー別Firestore対応）
     // ==========================
     async function showClothes(){
         closetItems.innerHTML = "";
 
+        // ★ ログイン中のユーザーを取得
+        const user = firebase.auth().currentUser;
+        if (!user) return; // 未ログイン時は処理を中断（coordinate.html側でリダイレクトされます）
+
         try {
-            // Firestoreから服データを取得
-            const snapshot = await db.collection("clothes").get();
+            // ★ ログインユーザー配下の "clothes" コレクションから服データを取得
+            const snapshot = await db.collection("users").doc(user.uid).collection("clothes").get();
 
             snapshot.forEach(function(doc){
                 const cloth = doc.data();
@@ -55,7 +59,12 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }
 
-    showClothes();
+    // ★ ログイン状態の確認が終わってから服一覧を取得する
+    firebase.auth().onAuthStateChanged(function(user){
+        if (user) {
+            showClothes();
+        }
+    });
 
     window.changeStatusFilter = function(){
         currentStatus =
@@ -73,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function(){
     // コーデエリアへ服追加
     // ==========================
     function addClothToArea(cloth, id){
-        const guide =dropArea.querySelector(".guide-text");
+        const guide = dropArea.querySelector(".guide-text");
 
         if(guide){
             guide.remove();
@@ -202,11 +211,11 @@ document.addEventListener("DOMContentLoaded", function(){
                 }
             )
             .then(async function(canvas){
-                const image =canvas.toDataURL("image/png");
-                sessionStorage.setItem("coordinateImage",image);
-                sessionStorage.setItem("usedClothes",JSON.stringify(usedIds));
-                location.href="save.html";
+                const image = canvas.toDataURL("image/png");
+                sessionStorage.setItem("coordinateImage", image);
+                sessionStorage.setItem("usedClothes", JSON.stringify(usedIds));
+                location.href = "save.html";
             });
         }
     )
-});  
+});
