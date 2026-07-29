@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>服登録</title>
 
 <!-- Firebase SDK (v9/v10 Compat) の読み込み -->
@@ -26,11 +27,9 @@
 
 <style>
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    padding: 30px;
+    text-align: left;
+    margin: 20px;
+    font-family: sans-serif;
 }
 
 .preview {
@@ -41,10 +40,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #fafafa;
 }
 .preview img {
     max-width: 100%;
     max-height: 100%;
+    object-fit: contain;
 }
 
 .modal-overlay {
@@ -67,6 +68,7 @@ body {
     width: 320px;
     max-width: 90%;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-align: left;
 }
 
 .modal-preview {
@@ -82,6 +84,7 @@ body {
 .modal-preview img {
     max-width: 100%;
     max-height: 100%;
+    object-fit: contain;
 }
 
 .modal-buttons {
@@ -101,7 +104,7 @@ body {
 <h2>服を登録</h2>
 
 <div class="preview">
-    <img id="previewImage">
+    <img id="previewImage" alt="">
 </div>
 
 <br>
@@ -110,7 +113,7 @@ body {
 
 <br><br>
 
-<label>カテゴリ</label>
+<label for="category">カテゴリ</label><br>
 <select id="category">
     <option>トップス</option>
     <option>ボトムス</option>
@@ -122,7 +125,7 @@ body {
 
 <br><br>
 
-<label>状態</label>
+<label for="status">状態</label><br>
 <select id="status">
     <option>所持服</option>
     <option>未所持服</option>
@@ -130,7 +133,7 @@ body {
 
 <br><br>
 
-<label>メモ</label><br>
+<label for="memo">メモ</label><br>
 <textarea id="memo" rows="4" cols="30"></textarea>
 
 <br><br>
