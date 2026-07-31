@@ -1,7 +1,8 @@
 body{
     margin:0;
     font-family:sans-serif;
-        background-color: #ffffff;
+    background-color: #ffffff;
+    padding-bottom: 80px; /* 下ナビゲーションに被らないための底面余白 */
 }
 
 /* 上バー */
@@ -11,6 +12,11 @@ body{
     background:white;
     border-bottom:1px solid #ddd;
 }
+.top-bar h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
 /* コーデ作成エリアに置いた服 */
 .placed-cloth {
     position:absolute;
@@ -22,12 +28,13 @@ body{
     cursor:move;
     user-select:none;
 }
+
 /* coordinate.htmlのクローゼット表示 */
 #closet-items {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-   overflow-y:auto;
+    overflow-y:auto;
 }
 .cloth-item {
     width: 50px;
@@ -60,15 +67,16 @@ body{
     gap:20px;
 }
 
-/* メイン3分割 */
+/* PC版 メイン3分割 */
 .coord-main{
     display:flex;
     height:calc(100vh - 140px);
     gap:20px;
     padding:10px;
+    box-sizing: border-box;
 }
 
-/* 左側ボタン */
+/* PC版 左側ボタン */
 .side-left{
     display:flex;
     flex-direction:column;
@@ -83,9 +91,10 @@ body{
     background:white;
     box-shadow:0 2px 5px rgba(0,0,0,0.2);
     font-size:20px;
+    cursor: pointer;
 }
 
-/* 中央キャンバス */
+/* PC版 中央キャンバス */
 .coord-canvas{
     flex:1;
     position:relative;
@@ -109,7 +118,7 @@ body{
 .bottom{ top:200px; left:50%; transform:translateX(-50%); }
 .shoes{ top:320px; left:50%; transform:translateX(-50%); }
 
-/* 下ナビ (ここを確実に固定・調整) */
+/* 下ナビゲーションバー固定表示 */
 .bottom-nav{
     position:fixed;
     bottom:0;
@@ -134,15 +143,13 @@ body{
     align-items: center;
 }
 
-/* ナビゲーションバーにある画像はすべて小さくサイズ固定する */
 .bottom-nav img {
-    width: 28px !important;       /* 幅を確実に28pxに固定 */
-    height: 28px !important;      /* 高さを確実に28pxに固定 */
+    width: 28px !important;
+    height: 28px !important;
     max-width: 28px !important;
     max-height: 28px !important;
-    object-fit: contain;          /* 画像が歪むのを防ぐ */
+    object-fit: contain;
 }
-
 
 #outfit-list{
     display:grid;
@@ -207,6 +214,7 @@ textarea{
     width:250px;
     box-sizing:border-box;
 }
+
 .search-area{
     display:flex;
     gap:10px;
@@ -220,4 +228,93 @@ textarea{
 
 .search-area select{
     width:150px;
+}
+
+
+/* ==================================================
+   📱 スマホ専用レイアウト (画面幅 768px 以下)
+   ================================================== */
+@media (max-width: 768px) {
+
+    /* 横スクロール発生を完全ブロック */
+    html, body {
+        overflow-x: hidden;
+    }
+
+    /* ① 全体を縦並びにする */
+    .coord-main {
+        flex-direction: column;
+        height: auto;
+        gap: 15px;
+        padding: 10px;
+    }
+
+    /* ② クローゼット（選択エリア）を上部に配置 */
+    .closet {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        padding-right: 0;
+        padding-bottom: 10px;
+        box-sizing: border-box;
+    }
+
+    .closet h2 {
+        margin: 0 0 8px 0;
+        font-size: 16px;
+    }
+
+    .closet select {
+        width: 48%; /* フィルター2つを横並びにする */
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+
+    /* 服一覧をスマホで指で滑らせる横スクロールにする */
+    #closet-items {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 10px;
+        padding: 5px 0;
+        white-space: nowrap;
+    }
+
+    .cloth-item, #closet-items img {
+        flex-shrink: 0;
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    /* ③ コーデ作成セクションも縦並びに */
+    .coord-section {
+        flex-direction: column-reverse; /* キャンバスを上に、ボタンを下に配置 */
+        width: 100%;
+        gap: 15px;
+    }
+
+    /* ④ ボタンエリア（ゴミ箱・保存）を横並びに変える */
+    .side-left {
+        flex-direction: row;
+        justify-content: center;
+        gap: 25px;
+        width: 100%;
+    }
+
+    /* ⑤ キャンバス（服をドラッグする枠）を中央に大きく正方形で表示 */
+    .coord-canvas, #drop-area {
+        width: 100% !important;
+        max-width: 340px; /* スマホ画面にフィットする幅 */
+        height: 340px !important;
+        aspect-ratio: 1 / 1;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    .guide-text {
+        text-align: center;
+        margin-top: 150px;
+        color: #999;
+        font-size: 14px;
+    }
 }
