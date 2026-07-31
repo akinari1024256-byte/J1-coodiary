@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>服登録</title>
+<title>服登録 - coordinary</title>
+
+<!-- 共通スタイルの読み込み -->
+<link rel="stylesheet" href="css/style.css">
 
 <!-- Firebase SDK (v10 Compat) の読み込み -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -39,28 +42,64 @@
 </script>
 
 <style>
-body {
-    text-align: left;
-    margin: 20px;
-    font-family: sans-serif;
+/* 登録画面固有の追加レイアウト調整 */
+.register-container {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 24px;
+    background: var(--card-bg, #ffffff);
+    border-radius: var(--radius-lg, 16px);
+    box-shadow: var(--shadow-sm, 0 2px 8px rgba(0,0,0,0.04));
+    border: 1px solid var(--border-color, #e9ecef);
+    box-sizing: border-box;
 }
 
 .preview {
-    width: 250px;
-    height: 250px;
-    border: 2px solid #ccc;
+    width: 100%;
+    max-width: 280px;
+    height: 280px;
+    border: 2px dashed #cbd5e1;
+    border-radius: var(--radius-md, 12px);
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fafafa;
+    background-color: var(--bg-color, #f8f9fa);
+    margin: 0 auto 20px;
 }
+
 .preview img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
 }
 
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-primary, #2c3e50);
+}
+
+.form-group input[type="file"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* モーダルダイアログ */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -68,32 +107,41 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .modal-content {
     background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 320px;
+    padding: 24px;
+    border-radius: var(--radius-lg, 16px);
+    width: 340px;
     max-width: 90%;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: var(--shadow-md, 0 4px 16px rgba(0,0,0,0.15));
     text-align: left;
 }
 
+.modal-content h3 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
 .modal-preview {
-    width: 200px;
-    height: 200px;
-    border: 1px dashed #aaa;
-    margin: 10px auto;
+    width: 180px;
+    height: 180px;
+    border: 1px dashed var(--border-color, #e9ecef);
+    border-radius: 8px;
+    margin: 10px auto 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f9f9f9;
+    background-color: var(--bg-color, #f8f9fa);
 }
+
 .modal-preview img {
     max-width: 100%;
     max-height: 100%;
@@ -102,82 +150,89 @@ body {
 
 .modal-buttons {
     display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
+    gap: 10px;
+    margin-top: 20px;
 }
+
 .modal-buttons button {
-    padding: 8px 16px;
-    cursor: pointer;
+    flex: 1;
+    padding: 10px 8px;
+    font-size: 13px;
 }
 </style>
 </head>
 
 <body>
 
-<h2>服を登録</h2>
+<header class="top-bar">
+    <h1>服を登録</h1>
+</header>
 
-<div class="preview">
-    <img id="previewImage" alt="">
-</div>
+<main class="register-container">
 
-<br>
+    <div class="preview">
+        <img id="previewImage" alt="">
+    </div>
 
-<!-- ① ライブラリ/アルバムから選択 -->
-<label for="imageInput"><b>📁 アルバムから選ぶ：</b></label><br>
-<input type="file" id="imageInput" accept="image/*">
+    <!-- ① ライブラリ/アルバムから選択 -->
+    <div class="form-group">
+        <label for="imageInput">📁 アルバムから選ぶ</label>
+        <input type="file" id="imageInput" accept="image/*">
+    </div>
 
-<br><br>
+    <!-- ② スマホのカメラを直接起動して撮影 -->
+    <div class="form-group">
+        <label for="cameraInput">📷 カメラで撮影する</label>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment">
+    </div>
 
-<!-- ② スマホのカメラを直接起動して撮影 -->
-<label for="cameraInput"><b>📷 カメラで撮影する：</b></label><br>
-<input type="file" id="cameraInput" accept="image/*" capture="environment">
+    <div class="form-group">
+        <label for="category">カテゴリ</label>
+        <select id="category">
+            <option>トップス</option>
+            <option>ボトムス</option>
+            <option>ワンピース</option>
+            <option>アウター</option>
+            <option>シューズ</option>
+            <option>アクセサリー</option>
+        </select>
+    </div>
 
-<br><br>
+    <div class="form-group">
+        <label for="status">状態</label>
+        <select id="status">
+            <option>所持服</option>
+            <option>未所持服</option>
+        </select>
+    </div>
 
-<label for="category">カテゴリ</label><br>
-<select id="category">
-    <option>トップス</option>
-    <option>ボトムス</option>
-    <option>ワンピース</option>
-    <option>アウター</option>
-    <option>シューズ</option>
-    <option>アクセサリー</option>
-</select>
+    <div class="form-group">
+        <label for="memo">メモ</label>
+        <textarea id="memo" rows="4"></textarea>
+    </div>
 
-<br><br>
+    <button class="btn-submit" onclick="saveClothes()">保存</button>
 
-<label for="status">状態</label><br>
-<select id="status">
-    <option>所持服</option>
-    <option>未所持服</option>
-</select>
+</main>
 
-<br><br>
-
-<label for="memo">メモ</label><br>
-<textarea id="memo" rows="4" cols="30"></textarea>
-
-<br><br>
-
-<button onclick="saveClothes()">保存</button>
-
+<!-- 確認モーダル -->
 <div id="confirmModal" class="modal-overlay">
     <div class="modal-content">
         <h3>登録内容の確認</h3>
         
-        <p><strong>【切り抜き結果】</strong></p>
+        <p style="font-size: 13px; margin-bottom: 5px;"><strong>【切り抜き結果】</strong></p>
         <div class="modal-preview">
             <img id="croppedPreviewImage" alt="切り抜き画像">
         </div>
 
-        <p><strong>カテゴリ:</strong> <span id="confirmCategory"></span></p>
-        <p><strong>状態:</strong> <span id="confirmStatus"></span></p>
-        <p><strong>メモ:</strong> <span id="confirmMemo"></span></p>
-        <p id="confirmAiInfo" style="font-size: 0.8em; color: #555;"></p>
+        <p style="font-size: 14px; margin: 6px 0;"><strong>カテゴリ:</strong> <span id="confirmCategory"></span></p>
+        <p style="font-size: 14px; margin: 6px 0;"><strong>状態:</strong> <span id="confirmStatus"></span></p>
+        <p style="font-size: 14px; margin: 6px 0;"><strong>メモ:</strong> <span id="confirmMemo"></span></p>
+        <p id="confirmAiInfo" style="font-size: 0.8em; color: var(--text-secondary, #7f8c8d); margin-top: 8px;"></p>
 
         <div class="modal-buttons">
-            <button onclick="closeModal()">キャンセル（修正する）</button>
-            <button onclick="submitToFirebase()" style="background-color: #4CAF50; color: white; border: none;">この内容で登録</button>
+            <button onclick="closeModal()" id="editButton">キャンセル</button>
+            <button onclick="submitToFirebase()">この内容で登録</button>
         </div>
     </div>
 </div>
