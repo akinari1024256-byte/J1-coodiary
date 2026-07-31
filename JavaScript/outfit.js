@@ -117,9 +117,23 @@ async function loadOutfits(){
 
                     if(confirm("削除しますか？")){
                         try {
-                            // ★ ユーザー配下の指定ドキュメントを削除
+                            if(outfit.usedClothes){
+                                for(const clothId of outfit.usedClothes){
+                                    const clothRef = db.collection("users")
+                                    .doc(user.uid)
+                                    .collection("clothes")
+                                    .doc(clothId);
+                                    const clothDoc = await clothRef.get();
+                                    if(clothDoc.exists){
+                                        const count = clothDoc.data().count || 0;
+                                        await clothRef.update({
+                                            count: Math.max(0, count - 1)
+                                        });
+                                    }
+                                }
+                            }
                             await db.collection("users").doc(user.uid).collection("outfits").doc(docId).delete();
-                            loadOutfits(); // 画面を再読み込み
+                            loadOutfits();
                         } catch (error) {
                             console.error("コーデの削除エラー:", error);
                             alert("削除に失敗しました。");

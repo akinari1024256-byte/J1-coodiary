@@ -55,6 +55,7 @@ async function saveOutfit() {
             tag: document.getElementById("outfitTag").value,
             memo: document.getElementById("outfitMemo").value,
             hasUnowned: hasUnowned,
+            usedClothes: usedIds,
             createdAt: firebase.firestore.FieldValue.serverTimestamp() // 並び替え用タイムスタンプ
         };
 

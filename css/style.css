@@ -129,6 +129,14 @@ body{
     text-align:center;
 }
 
+/* ナビゲーションバーにある画像はすべて同じサイズにする */
+.bottom-nav img {
+    width: 28px;        /* 幅（大きさを変えたい場合はこの数値を変更） */
+    height: 28px;       /* 高さ */
+    object-fit: contain; /* 画像が歪むのを防ぐ */
+}
+
+
 #outfit-list{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
