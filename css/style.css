@@ -109,10 +109,11 @@ body{
 .bottom{ top:200px; left:50%; transform:translateX(-50%); }
 .shoes{ top:320px; left:50%; transform:translateX(-50%); }
 
-/* 下ナビ */
+/* 下ナビ (ここを確実に固定・調整) */
 .bottom-nav{
     position:fixed;
     bottom:0;
+    left:0;
     width:100%;
     height:70px;
     background:white;
@@ -120,6 +121,7 @@ body{
     justify-content:space-around;
     align-items:center;
     border-top:1px solid #ddd;
+    z-index: 1000;
 }
 
 .bottom-nav a{
@@ -127,13 +129,18 @@ body{
     color:#666;
     font-size:12px;
     text-align:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* ナビゲーションバーにある画像はすべて同じサイズにする */
+/* ナビゲーションバーにある画像はすべて小さくサイズ固定する */
 .bottom-nav img {
-    width: 28px;        /* 幅（大きさを変えたい場合はこの数値を変更） */
-    height: 28px;       /* 高さ */
-    object-fit: contain; /* 画像が歪むのを防ぐ */
+    width: 28px !important;       /* 幅を確実に28pxに固定 */
+    height: 28px !important;      /* 高さを確実に28pxに固定 */
+    max-width: 28px !important;
+    max-height: 28px !important;
+    object-fit: contain;          /* 画像が歪むのを防ぐ */
 }
 
 
