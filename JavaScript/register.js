@@ -1,34 +1,54 @@
 let imageData = "";
 let croppedImageData = ""; // AI切り抜き後の画像保持用
+let selectedFile = null;  // ★選択または撮影されたファイルを保持
 
-// 画像選択時のプレビュー処理
-document.getElementById("imageInput")
-.addEventListener("change", function(e){
-
+// 共通のファイル読み込み処理関数
+function handleFileChange(e) {
     const file = e.target.files[0];
+    if (!file) return;
 
-    if(!file) return;
+    selectedFile = file; // ファイルを保持
 
     const reader = new FileReader();
-
-    reader.onload = function(event){
-
+    reader.onload = function(event) {
         imageData = event.target.result;
-
         document.getElementById("previewImage").src = imageData;
     };
-
     reader.readAsDataURL(file);
+}
+
+// 画面ロード時にイベントリスナーをセット
+document.addEventListener("DOMContentLoaded", () => {
+    const imageInput = document.getElementById("imageInput");
+    const cameraInput = document.getElementById("cameraInput");
+
+    // ① アルバムから画像が選択されたとき
+    if (imageInput) {
+        imageInput.addEventListener("change", (e) => {
+            // カメラ側の選択をリセットしてファイル更新
+            if (cameraInput) cameraInput.value = "";
+            handleFileChange(e);
+        });
+    }
+
+    // ② カメラで撮影されたとき
+    if (cameraInput) {
+        cameraInput.addEventListener("change", (e) => {
+            // アルバム側の選択をリセットしてファイル更新
+            if (imageInput) imageInput.value = "";
+            handleFileChange(e);
+        });
+    }
 });
 
 // 保存ボタンクリック時：Pythonで画像解析し、確認モーダルを表示
 async function saveClothes() {
 
-    const fileInput = document.getElementById("imageInput");
-    const file = fileInput.files[0];
+    // ★ アルバムかカメラのどちらかでファイルが選ばれているか確認
+    const file = selectedFile;
 
     if (!file) {
-        alert("服の画像を選択してください。");
+        alert("服の画像を選択するか、カメラで撮影してください。");
         return;
     }
 
@@ -59,7 +79,7 @@ async function saveClothes() {
         // 解析結果と入力値をモーダルへ反映
         let processedImg = result.cropped_image || imageData;
         
-        // base64ヘッダーが付いていない場合に自動補完する処理を追加
+        // base64ヘッダーが付いていない場合に自動補完する処理
         if (processedImg && !processedImg.startsWith("data:image")) {
             processedImg = "data:image/png;base64," + processedImg;
         }
@@ -81,6 +101,7 @@ async function saveClothes() {
 
     } catch (error) {
         // 通信失敗時は元画像でモーダルを表示
+        console.warn("Pythonサーバーとの通信に失敗したため、元画像を使用します:", error);
         croppedImageData = imageData;
         document.getElementById("croppedPreviewImage").src = imageData;
         document.getElementById("confirmCategory").textContent = category;
