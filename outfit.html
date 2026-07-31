@@ -1,87 +1,89 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Coordiary - Outfit</title>
-        <link rel="stylesheet" href="css/style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coordiary - Outfit</title>
+    <link rel="stylesheet" href="css/style.css">
 
-        <!-- Firebase SDK (v10 Compat) の読み込み -->
-        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-        <!-- ★ログイン連携に必要な Auth SDK を追加 -->
-        <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <!-- Firebase SDK (v10 Compat) の読み込み -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <!-- ★ログイン連携に必要な Auth SDK を追加 -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
-        <script>
-          // Firebase 設定情報（他画面と共通）
-          const firebaseConfig = {
-            apiKey: "AIzaSyA_a35sK_zsTwwui5YlY0_ftSyEwJHyEoc",
-            authDomain: "coordinary-7accd.firebaseapp.com",
-            projectId: "coordinary-7accd",
-            storageBucket: "coordinary-7accd.firebasestorage.app",
-            messagingSenderId: "235582648668",
-            appId: "1:235582648668:web:e0c70a45e659307fcad199"
-          };
+    <script>
+      // Firebase 設定情報（他画面と共通）
+      const firebaseConfig = {
+        apiKey: "AIzaSyA_a35sK_zsTwwui5YlY0_ftSyEwJHyEoc",
+        authDomain: "coordinary-7accd.firebaseapp.com",
+        projectId: "coordinary-7accd",
+        storageBucket: "coordinary-7accd.firebasestorage.app",
+        messagingSenderId: "235582648668",
+        appId: "1:235582648668:web:e0c70a45e659307fcad199"
+      };
 
-          // Firebase の初期化
-          firebase.initializeApp(firebaseConfig);
-          window.db = firebase.firestore();
-          window.auth = firebase.auth(); // ★Authオブジェクトをグローバル化
+      // Firebase の初期化
+      firebase.initializeApp(firebaseConfig);
+      window.db = firebase.firestore();
+      window.auth = firebase.auth(); // ★Authオブジェクトをグローバル化
 
-          // ★未ログインユーザーを login.html へ自動リダイレクトするガード処理
-          window.auth.onAuthStateChanged((user) => {
-            if (!user) {
-              console.log("未ログインのため、login.htmlへ遷移します");
-              location.href = "login.html";
-            } else {
-              console.log("ログイン中のユーザー:", user.displayName || user.email);
-            }
-          });
-        </script>
-    </head>
-    <body>
+      // ★未ログインユーザーを login.html へ自動リダイレクトするガード処理
+      window.auth.onAuthStateChanged((user) => {
+        if (!user) {
+          console.log("未ログインのため、login.htmlへ遷移します");
+          location.href = "login.html";
+        } else {
+          console.log("ログイン中のユーザー:", user.displayName || user.email);
+        }
+      });
+    </script>
+</head>
+<body>
 
-        <header class="top-bar">
-            <h1>コーデ履歴</h1>
-        </header>
+    <header class="top-bar">
+        <h1>コーデ履歴</h1>
+    </header>
 
-        <button id="editButton">編集</button>
+    <main>
+        <!-- 操作・検索エリア（編集ボタンもこちらに配置してスッキリ整列） -->
+        <div class="search-area">
+            <button id="editButton">編集</button>
 
-        <main>
-            <div class="search-area">
-                <input type="text" id="tagSearch" placeholder="タグ検索">
-                <select id="sort">
-                    <option value="new">新しい順</option>
-                    <option value="old">古い順</option>
-                </select>
+            <input type="text" id="tagSearch" placeholder="タグ検索">
+            
+            <select id="sort">
+                <option value="new">新しい順</option>
+                <option value="old">古い順</option>
+            </select>
 
-                <select id="filter">
-                    <option value="all">すべて</option>
-                    <option value="owned">所持服のみ</option>
-                    <option value="unowned">未所持服あり</option>
-                </select>
+            <select id="filter">
+                <option value="all">すべて</option>
+                <option value="owned">所持服のみ</option>
+                <option value="unowned">未所持服あり</option>
+            </select>
+        </div>
 
-            </div>
-            <div id="outfit-list"></div>
-        </main>
+        <!-- コーデ一覧表示エリア -->
+        <div id="outfit-list"></div>
+    </main>
 
-        <script src="JavaScript/outfit.js"></script>
+    <script src="JavaScript/outfit.js"></script>
 
-        <nav class="bottom-nav">
+    <!-- 下部ナビゲーションバー -->
+    <nav class="bottom-nav">
+        <a href="closet.html">
+            <img src="images/closet.png" alt="クローゼット">
+        </a>
 
-            <a href="closet.html">
-                <img src="images/closet.png">
-            </a>
+        <a href="coordinate.html">
+            <img src="images/coordinate.png" alt="コーデ作成">
+        </a>
 
-            <a href="coordinate.html">
-                <img src="images/coordinate.png">
-            </a>
+        <a href="outfit.html" class="active">
+            <img src="images/outfitred.png" alt="コーデ履歴">
+        </a>
+    </nav>
 
-            <a href="outfit.html" class="active">
-                <img src="images/outfitred.png">
-            </a>
-
-        </nav>
-
-    </body>
+</body>
 </html>
