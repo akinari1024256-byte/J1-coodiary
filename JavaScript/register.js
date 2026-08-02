@@ -41,6 +41,53 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// 送信前にスマホの巨大画像を画質を保ったまま最適化（軽量化）する関数
+function resizeImageBeforeUpload(file, maxWidth = 1000) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            img.src = e.target.result;
+        };
+
+        img.onload = () => {
+            let width = img.width;
+            let height = img.height;
+
+            // 長辺が1000pxを超える場合はアスペクト比を維持して最適化
+            if (width > maxWidth || height > maxWidth) {
+                if (width > height) {
+                    height = Math.round((height * maxWidth) / width);
+                    width = maxWidth;
+                } else {
+                    width = Math.round((width * maxWidth) / height);
+                    height = maxWidth;
+                }
+            }
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // 高解像度を維持したBlob形式で生成
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    resolve(blob);
+                } else {
+                    reject(new Error("画像の軽量化に失敗しました"));
+                }
+            }, "image/jpeg", 0.85);
+        };
+
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
+
 // 保存ボタンクリック時：Pythonで画像解析し、確認モーダルを表示
 async function saveClothes() {
 
@@ -56,14 +103,17 @@ async function saveClothes() {
     const status = document.getElementById("status").value;
     const memo = document.getElementById("memo").value;
 
-    // Pythonサーバーへ送信するデータの作成
-    const formData = new FormData();
-    formData.append("image", file);
-    formData.append("category", category);
-    formData.append("status", status);
-    formData.append("memo", memo);
-
     try {
+        // スマホの巨大画像を画面表示・AI解析に最適なサイズへ調整
+        const resizedBlob = await resizeImageBeforeUpload(file, 1000);
+
+        // Pythonサーバーへ送信するデータの作成
+        const formData = new FormData();
+        formData.append("image", resizedBlob, "upload.jpg");
+        formData.append("category", category);
+        formData.append("status", status);
+        formData.append("memo", memo);
+
         // Pythonへ画像送信・切り抜き＆解析のリクエスト
         const response = await fetch("http://127.0.0.1:5000/process_image", {
             method: "POST",
