@@ -2,7 +2,7 @@ import base64
 import io
 import numpy as np
 import cv2
-from PIL import Image
+from PIL import Image, ImageOps
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from rembg import remove
@@ -21,15 +21,20 @@ def process_image():
 
     file = request.files['image']
     image_bytes = file.read()
+    
+    # PILで画像を読み込み
     input_img = Image.open(io.BytesIO(image_bytes))
 
-    # MediaPipe での骨格検出
-    img_np = np.array(input_img)
-    if img_np.shape[2] == 4:
-        img_rgb = cv2.cvtColor(img_np, cv2.COLOR_RGBA2RGB)
-    else:
-        img_rgb = cv2.cvtColor(img_np, cv2.COLOR_BGR2RGB)
+    # ★スマホで撮影した画像の自動回転（Exif情報）を補正
+    input_img = ImageOps.exif_transpose(input_img)
 
+    # MediaPipe用にRGB配列へ変換（透過PNGなどのアルファチャンネル対策）
+    if input_img.mode != 'RGB':
+        img_rgb = np.array(input_img.convert('RGB'))
+    else:
+        img_rgb = np.array(input_img)
+
+    # MediaPipe での骨格検出
     results = pose.process(img_rgb)
     analysis_result = ""
 
@@ -53,5 +58,6 @@ def process_image():
     })
 
 if __name__ == '__main__':
-    print("🚀 服の画像処理サーバーを起動中... http://127.0.0.1:5000")
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    print("🚀 服の画像処理サーバーを起動中...")
+    # ★ host='0.0.0.0' に変更してスマホからのアクセスを許可！
+    app.run(host='0.0.0.0', port=5000, debug=True)
