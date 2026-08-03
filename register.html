@@ -33,8 +33,8 @@
   // ★未ログインユーザーを login.html へ自動リダイレクトするガード処理
   window.auth.onAuthStateChanged((user) => {
     if (!user) {
-      console.log("未ログインのため、login.htmlへ遷移します");
-      location.href = "login.html";
+      console.log("未ログインのため、index.htmlへ遷移します");
+      location.href = "index.html";
     } else {
       console.log("ログイン中のユーザー:", user.displayName || user.email);
     }

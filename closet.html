@@ -13,7 +13,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
     <script>
-      // Firebase 設定情報（register.html / login.html と共通）
+      // Firebase 設定情報（register.html / index.html と共通）
       const firebaseConfig = {
         apiKey: "AIzaSyA_a35sK_zsTwwui5YlY0_ftSyEwJHyEoc",
         authDomain: "coordinary-7accd.firebaseapp.com",
@@ -31,8 +31,8 @@
       // ★未ログインユーザーを login.html へ自動リダイレクトするガード処理
       window.auth.onAuthStateChanged((user) => {
         if (!user) {
-          console.log("未ログインのため、login.htmlへ遷移します");
-          location.href = "login.html";
+          console.log("未ログインのため、index.htmlへ遷移します");
+          location.href = "index.html";
         } else {
           console.log("ログイン中のユーザー:", user.displayName || user.email);
         }
