@@ -114,8 +114,11 @@ async function saveClothes() {
         formData.append("status", status);
         formData.append("memo", memo);
 
-        // ★ IPアドレスを直接指定せず相対パス指定に変更（IPが変わっても自動追従）
-        const response = await fetch("/process_image", {
+        // ★【修正ポイント】アクセス中のIP/ホスト名を自動取得して5000番ポートのPythonサーバーへ送信
+        const currentHost = window.location.hostname;
+        const serverUrl = `http://${currentHost}:5000/process_image`;
+
+        const response = await fetch(serverUrl, {
             method: "POST",
             body: formData
         });
