@@ -114,8 +114,8 @@ async function saveClothes() {
         formData.append("status", status);
         formData.append("memo", memo);
 
-        // Pythonへ画像送信・切り抜き＆解析のリクエスト
-        const response = await fetch("http://127.0.0.1:5000/process_image", {
+        // ★ IPアドレスを直接指定せず相対パス指定に変更（IPが変わっても自動追従）
+        const response = await fetch("/process_image", {
             method: "POST",
             body: formData
         });
