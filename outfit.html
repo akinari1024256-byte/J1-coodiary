@@ -28,7 +28,7 @@
       window.db = firebase.firestore();
       window.auth = firebase.auth(); // ★Authオブジェクトをグローバル化
 
-      // ★未ログインユーザーを login.html へ自動リダイレクトするガード処理
+      // ★未ログインユーザーを index.html へ自動リダイレクトするガード処理
       window.auth.onAuthStateChanged((user) => {
         if (!user) {
           console.log("未ログインのため、index.htmlへ遷移します");

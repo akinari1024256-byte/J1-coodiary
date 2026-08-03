@@ -174,7 +174,7 @@ async function submitToFirebase() {
     const user = firebase.auth().currentUser;
     if (!user) {
         alert("ログインしていません。ログイン画面へ移動します。");
-        location.href = "login.html";
+        location.href = "index.html";
         return;
     }
 
